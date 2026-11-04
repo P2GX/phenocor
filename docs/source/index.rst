@@ -1,5 +1,5 @@
 phenocor
-============
+========
 
 **phenocor** is a Python library for analyzing phenotype correlations in
 `GA4GH Phenopacket <https://www.ga4gh.org/product/phenopackets/>`_
@@ -63,7 +63,10 @@ This example shows the basic workflow:
 
 **load phenopackets → build dataset → compute correlations**
 
-
+.. image:: ../img/gnas-correlation.png
+   :width: 400px
+   :align: center
+   :alt: Example correlation plot
 
 .. toctree::
    :maxdepth: 1

@@ -3,3 +3,15 @@ sphinx-rtd-theme
 nbsphinx>=0.8.10
 ipython
 nbconvert
+numpy
+pandas
+plotly
+scipy
+hpo-toolkit
+phenopackets
+scikit-learn
+kaleido
+gpsea
+joblib
+tqdm
+statsmodels

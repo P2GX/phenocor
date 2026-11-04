@@ -38,3 +38,6 @@ autodoc_default_options = {
     "undoc-members": False,
     "private-members": False
 }
+
+def setup(app):
+    app.add_css_file('custom.css')

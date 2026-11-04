@@ -1,0 +1,13 @@
+
+/* Expand the main content container */
+.wy-nav-content {
+    max-width: 1200px !important;
+}
+
+/* the sidebars  take less relative space */
+.wy-nav-side {
+    width: 250px !important;
+}
+.wy-nav-content-wrap {
+    margin-left: 250px !important;
+}
