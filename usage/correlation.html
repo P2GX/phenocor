@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Correlation Analysis &mdash; phenosign 0.1.5 documentation</title>
+  <title>Correlation Analysis &mdash; phenocor 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c6c3d6f6" />
@@ -14,14 +14,14 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../_static/documentation_options.js?v=938c9ccc"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Synergy Analysis" href="synergy.html" />
+    <link rel="next" title="phenocor API" href="../api/phenocor.html" />
     <link rel="prev" title="Build Dataset" href="dataset.html" /> 
 </head>
 
@@ -34,7 +34,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            phenosign
+            phenocor
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -50,28 +50,23 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">FBN1 Cohort Analysis: Correlation and Synergy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">FBN1 Cohort Analysis: Correlation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Build Dataset</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Correlation Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#what-is-correlation">What is correlation?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#correlation-methods">Correlation methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#core-usage">Core usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#key-parameters">Key parameters</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#core-usage">Core usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-parameters">Key parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#significant-correlations">Significant correlations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#save-results">Save results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next steps</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="synergy.html">Synergy Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../api/phenosign.html">phenosign API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/phenocor.html">phenocor API</a></li>
 </ul>
 
         </div>
@@ -80,7 +75,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">phenosign</a>
+          <a href="../index.html">phenocor</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -100,93 +95,131 @@
              
   <section id="correlation-analysis">
 <h1>Correlation Analysis<a class="headerlink" href="#correlation-analysis" title="Link to this heading"></a></h1>
-<p>Once a dataset has been constructed, pairwise associations between HPO terms
-can be quantified using <code class="docutils literal notranslate"><span class="pre">HPOCorrelationAnalyzer</span></code>.</p>
-<section id="what-is-correlation">
-<h2>What is correlation?<a class="headerlink" href="#what-is-correlation" title="Link to this heading"></a></h2>
-<p>Correlation measures the association between two phenotypes:</p>
-<ul class="simple">
-<li><p><strong>positive values</strong> → phenotypes tend to co-occur</p></li>
-<li><p><strong>negative values</strong> → phenotypes tend to occur in different individuals</p></li>
-<li><p><strong>values near zero</strong> → little or no association</p></li>
-</ul>
-</section>
-<section id="correlation-methods">
-<h2>Correlation methods<a class="headerlink" href="#correlation-methods" title="Link to this heading"></a></h2>
-<p>The analyzer supports correlation measures specifically optimized for binary (presence/absence) phenotype data:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">PHI</span></code> — Phi coefficient ($phi$), which mathematically equivalent to Pearson correlation for two binary variables. It measures the strength and direction of linear association between HPO terms.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">FISHER</span></code> — Fisher’s Exact Test, which computes the exact hypergeometric probability of the contingency table. It provides highly robust p-values alongside odds ratios, making it the preferred method for testing non-random associations in low-frequency HPO terms.</p></li>
-</ul>
-<p>For most clinical phenotypes, <code class="docutils literal notranslate"><span class="pre">FISHER</span></code> provides a reliable statistical significance cutoff, while <code class="docutils literal notranslate"><span class="pre">PHI</span></code> serves as an excellent standardized effect size for downstream network visualizations.</p>
-</section>
+<p>Pairwise associations between HPO terms can be analyzed using
+<code class="docutils literal notranslate"><span class="pre">HPOCorrelationAnalyzer</span></code>.</p>
+<p>For each pair, individuals with an unknown state for either term are
+excluded. Self-pairs, ancestor–descendant pairs, and pairs in which
+either phenotype has no variation are not tested. The analysis reports
+the Phi coefficient as a measure of association and uses Fisher’s exact
+test to assess statistical significance. P-values are adjusted across
+all tested pairs within the dataset using the Benjamini–Hochberg procedure.</p>
 <section id="core-usage">
 <h2>Core usage<a class="headerlink" href="#core-usage" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="n">HPOCorrelationAnalyzer</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenocor</span><span class="w"> </span><span class="kn">import</span> <span class="n">HPOCorrelationAnalyzer</span>
 
-<span class="n">analyzer</span> <span class="o">=</span> <span class="n">HPOCorrelationAnalyzer</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
-    <span class="n">min_individuals_for_correlation_test</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">HPOCorrelationAnalyzer</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-<span class="n">results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">compute_correlation_matrix</span><span class="p">(</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">compute_correlation_matrix</span><span class="p">(</span>
+    <span class="n">min_individuals</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">include_pmids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">results</span><span class="o">.</span><span class="n">results_table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="n">result</span><span class="o">.</span><span class="n">correlation_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>The main parameters control data filtering, correlation type, and parallelization.</p>
-<section id="key-parameters">
-<h3>Key parameters<a class="headerlink" href="#key-parameters" title="Link to this heading"></a></h3>
+<p>The Phi coefficient ranges from <code class="docutils literal notranslate"><span class="pre">-1</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">min_individuals_for_correlation_test</span></code>
-Minimum number of individuals required to evaluate a feature pair.
-Higher values increase robustness, while lower values allow more pairs to be tested.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>
-Number of parallel jobs for computing pairwise correlations.
-Set to <code class="docutils literal notranslate"><span class="pre">-1</span></code> to use all available CPU cores.</p></li>
-<li><p><cite>include_pmids`</cite>
-If <code class="docutils literal notranslate"><span class="pre">True</span></code>, tracks and aggregates underlying PubMed IDs (PMIDs) contributing to the phenotypic overlaps for downstream publication verification.</p></li>
+<li><p>positive values indicate that two phenotypes are observed together more often than expected under independence,</p></li>
+<li><p>negative values indicate that two phenotypes are observed together less often than expected under independence,</p></li>
+<li><p>values near zero indicate little or no association.</p></li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Correlation requires variation in the data — each HPO term must have both
-observed and excluded values across individuals. Terms with no variation
-are automatically skipped.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Ontologically related HPO terms may be excluded from pairwise testing to avoid
-spurious associations. Multiple-testing correction is applied automatically.</p>
-</div>
 </section>
+<section id="key-parameters">
+<h2>Key parameters<a class="headerlink" href="#key-parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">min_individuals</span></code></dt><dd><p>Minimum number of individuals with known states for both HPO terms after
+propagation required for a pair to be tested. The default is <code class="docutils literal notranslate"><span class="pre">20</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code></dt><dd><p>Number of parallel jobs used for pairwise calculations. Set to <code class="docutils literal notranslate"><span class="pre">-1</span></code>
+to use all available CPU cores.</p>
+</dd>
+</dl>
+</section>
+<section id="significant-correlations">
+<h2>Significant correlations<a class="headerlink" href="#significant-correlations" title="Link to this heading"></a></h2>
+<p>Significant correlations can be retrieved using an adjusted p-value
+threshold:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">significant</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_significant_correlations</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>By default, correlations with adjusted p-values below <code class="docutils literal notranslate"><span class="pre">0.05</span></code> are returned.</p>
+<p>A different significance threshold can be specified:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">significant</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_significant_correlations</span><span class="p">(</span>
+    <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Correlations can also be filtered by their absolute Phi coefficient:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">significant</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_significant_correlations</span><span class="p">(</span>
+    <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">min_abs_correlation</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="save-results">
 <h2>Save results<a class="headerlink" href="#save-results" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">save_correlation_results</span><span class="p">(</span>
-    <span class="n">corr_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-    <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">save_correlation_results()</span></code> saves correlations with adjusted
+p-values below <code class="docutils literal notranslate"><span class="pre">0.05</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">save_correlation_results</span><span class="p">(</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"correlation_results.csv"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Set <code class="docutils literal notranslate"><span class="pre">include_pmids=True</span></code> in <code class="docutils literal notranslate"><span class="pre">compute_correlation_matrix</span></code> to include associated
-PMIDs in the saved output.</p>
-</section>
-<section id="visualization">
-<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">plot_correlation_heatmap_with_significance</span><span class="p">(</span>
-    <span class="n">corr_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<p>Additional filtering by correlation strength can be applied:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">save_correlation_results</span><span class="p">(</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="s2">"correlation_results.csv"</span><span class="p">,</span>
     <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">min_abs_correlation</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">corr_threshold</span></code> sets the minimum correlation strength; <code class="docutils literal notranslate"><span class="pre">adj_pval_threshold</span></code>
-controls statistical significance. Lower thresholds include more pairs;
-higher thresholds focus on stronger and more reliable associations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">save_correlation_heatmap</span><span class="p">(</span>
+<p>To save all tested correlations without significance filtering:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">save_correlation_results</span><span class="p">(</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="s2">"correlation_results.csv"</span><span class="p">,</span>
+    <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Results can be saved as <code class="docutils literal notranslate"><span class="pre">.csv</span></code> or <code class="docutils literal notranslate"><span class="pre">.xlsx</span></code> files.</p>
+</section>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
+<p>Correlation results can be visualized as a heatmap:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">plot_correlation_heatmap_with_significance</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The displayed correlations can be filtered by statistical significance and
+correlation strength:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">plot_correlation_heatmap_with_significance</span><span class="p">(</span>
+    <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">min_abs_correlation</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">min_abs_correlation</span></code> sets an optional minimum absolute Phi coefficient.</dt><dd><p>The default for plotting is <code class="docutils literal notranslate"><span class="pre">0.1</span></code>; set it to <code class="docutils literal notranslate"><span class="pre">None</span></code> to disable this
+filter. This filter does not determine statistical significance.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">adj_pval_threshold</span></code> sets the adjusted p-value threshold.</p>
+<p>A custom subtitle can also be provided:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">plot_correlation_heatmap_with_significance</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Phenotype correlations"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The heatmap can be saved directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">save_correlation_heatmap</span><span class="p">(</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"correlation_heatmap.html"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The same filtering options can be applied when saving:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">save_correlation_heatmap</span><span class="p">(</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="s2">"correlation_heatmap.html"</span><span class="p">,</span>
+    <span class="n">adj_pval_threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">min_abs_correlation</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -194,17 +227,10 @@ higher thresholds focus on stronger and more reliable associations.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">.html</span></code> saves an interactive Plotly figure with zooming, panning,
 and hover tooltips.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.svg</span></code>, <code class="docutils literal notranslate"><span class="pre">.png</span></code>, <code class="docutils literal notranslate"><span class="pre">.pdf</span></code>, and <code class="docutils literal notranslate"><span class="pre">.jpg</span></code> save static
-publication-ready figures.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.svg</span></code>, <code class="docutils literal notranslate"><span class="pre">.png</span></code>, <code class="docutils literal notranslate"><span class="pre">.pdf</span></code>, and <code class="docutils literal notranslate"><span class="pre">.jpg</span></code> save static figures.</p></li>
 </ul>
-<p>For static image formats, the optional <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">scale</span></code> parameters can be used to control the output resolution.</p>
-</section>
-<section id="next-steps">
-<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>See <a class="reference internal" href="synergy.html"><span class="doc">Synergy Analysis</span></a> for higher-order interaction analysis</p></li>
-</ul>
+<p>For static image formats, <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, and <code class="docutils literal notranslate"><span class="pre">scale</span></code> can be used
+to control the output size and resolution.</p>
 </section>
 </section>
 
@@ -213,7 +239,7 @@ publication-ready figures.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="dataset.html" class="btn btn-neutral float-left" title="Build Dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="synergy.html" class="btn btn-neutral float-right" title="Synergy Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../api/phenocor.html" class="btn btn-neutral float-right" title="phenocor API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

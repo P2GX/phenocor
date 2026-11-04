@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>phenosign &mdash; phenosign 0.1.5 documentation</title>
+  <title>phenocor &mdash; phenocor 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c6c3d6f6" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=59fadc99"></script>
+      <script src="_static/documentation_options.js?v=938c9ccc"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -33,7 +33,7 @@
           
           
           <a href="#" class="icon icon-home">
-            phenosign
+            phenocor
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -49,17 +49,16 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">FBN1 Cohort Analysis: Correlation and Synergy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">FBN1 Cohort Analysis: Correlation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Usage</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/dataset.html">Build Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/correlation.html">Correlation Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/synergy.html">Synergy Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/phenosign.html">phenosign API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/phenocor.html">phenocor API</a></li>
 </ul>
 
         </div>
@@ -68,7 +67,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">phenosign</a>
+          <a href="#">phenocor</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -76,7 +75,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">phenosign</li>
+      <li class="breadcrumb-item active">phenocor</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,41 +85,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="phenosign">
-<h1>phenosign<a class="headerlink" href="#phenosign" title="Link to this heading"></a></h1>
-<p><strong>phenosign</strong> is a Python library for analyzing correlations and synergy in
-<a class="reference external" href="https://www.ga4gh.org/product/phenopackets/">GA4GH Phenopacket</a> cohorts.</p>
-<p>It provides tools to systematically process
-<a class="reference external" href="https://hpo.jax.org/">Human Phenotype Ontology</a> (HPO) features,
-identify pairwise associations, and detect higher-order interactions
-relevant to diseases or variant conditions.</p>
+  <section id="phenocor">
+<h1>phenocor<a class="headerlink" href="#phenocor" title="Link to this heading"></a></h1>
+<p><strong>phenocor</strong> is a Python library for analyzing phenotype correlations in
+<a class="reference external" href="https://www.ga4gh.org/product/phenopackets/">GA4GH Phenopacket</a>
+cohorts using
+<a class="reference external" href="https://hpo.jax.org/">Human Phenotype Ontology</a> (HPO) annotations.</p>
+<p>It provides tools for building analysis-ready phenotype datasets,
+accounting for the HPO hierarchy, and identifying pairwise associations
+between phenotypic features.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>Phenotypic features often co-occur or interact in complex ways across individuals.
-Understanding these relationships can provide insights into disease mechanisms,
-genotype-phenotype associations, and combinatorial biomarkers.</p>
-<p><strong>phenosign enables:</strong></p>
+<p>Phenotypic features can show patterns of association across individuals.
+Characterizing these relationships can help identify how phenotypes are
+related within Phenopacket cohorts.</p>
+<p><strong>phenocor enables:</strong></p>
 <ul class="simple">
-<li><p>Construction of structured datasets from phenopacket cohorts</p></li>
+<li><p>Construction of structured phenotype datasets from Phenopackets</p></li>
+<li><p>Hierarchy-aware processing of HPO annotations</p></li>
 <li><p>Pairwise correlation analysis of HPO terms</p></li>
-<li><p>Detection of higher-order feature interactions (synergy)</p></li>
-<li><p>Interactive visualization of correlation and synergy heatmaps</p></li>
+<li><p>Interactive visualization of correlation heatmaps</p></li>
 </ul>
 </section>
 <section id="quick-example">
 <h2>Quick Example<a class="headerlink" href="#quick-example" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.protobuf.json_format</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">phenopackets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Phenopacket</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">phenocor</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
    <span class="n">PhenotypeDatasetBuilder</span><span class="p">,</span>
    <span class="n">HPOCorrelationAnalyzer</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Load phenopackets</span>
-<span class="n">phenopacket_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"path/to/your/fbn1_phenopackets/"</span><span class="p">)</span>
+<span class="n">phenopacket_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"path/to/your/phenopackets/"</span><span class="p">)</span>
 
 <span class="n">phenopackets</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">phenopacket_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.json"</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">phenopacket_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.json"</span><span class="p">)):</span>
    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
       <span class="n">data</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
       <span class="n">phenopacket</span><span class="p">:</span> <span class="n">Phenopacket</span> <span class="o">=</span> <span class="n">Parse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Phenopacket</span><span class="p">())</span>
@@ -132,10 +133,10 @@ genotype-phenotype associations, and combinatorial biomarkers.</p>
 <span class="c1"># Run correlation analysis</span>
 <span class="n">analyzer</span> <span class="o">=</span> <span class="n">HPOCorrelationAnalyzer</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">compute_correlation_matrix</span><span class="p">()</span>
-<span class="n">results</span><span class="o">.</span><span class="n">result_table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">results</span><span class="o">.</span><span class="n">correlation_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This minimal example demonstrates the workflow:</p>
+<p>This example shows the basic workflow:</p>
 <p><strong>load phenopackets → build dataset → compute correlations</strong></p>
 <a class="reference internal image-reference" href="_images/gnas-correlation.png"><img alt="Example correlation plot" class="align-center" src="_images/gnas-correlation.png" style="width: 400px;" />
 </a>
@@ -148,7 +149,7 @@ genotype-phenotype associations, and combinatorial biomarkers.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">FBN1 Cohort Analysis: Correlation and Synergy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">FBN1 Cohort Analysis: Correlation</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -156,13 +157,12 @@ genotype-phenotype associations, and combinatorial biomarkers.</p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/dataset.html">Build Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/correlation.html">Correlation Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/synergy.html">Synergy Analysis</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/phenosign.html">phenosign API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/phenocor.html">phenocor API</a></li>
 </ul>
 </div>
 </section>

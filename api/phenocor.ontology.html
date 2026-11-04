@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>phenocor.ontology package &mdash; phenocor 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c6c3d6f6" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="phenocor.analysis package" href="phenocor.analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            phenocor
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">FBN1 Cohort Analysis: Correlation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/dataset.html">Build Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/correlation.html">Correlation Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="phenocor.html">phenocor API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="phenocor.core.html">phenocor.core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phenocor.analysis.html">phenocor.analysis package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">phenocor.ontology package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-phenocor.ontology._hpo_hierarchy">phenocor.ontology.hierarchy module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine"><code class="docutils literal notranslate"><span class="pre">HPOHierarchyEngine</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">phenocor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="phenocor.html">phenocor API</a></li>
+      <li class="breadcrumb-item active">phenocor.ontology package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/phenocor.ontology.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="phenocor-ontology-package">
+<h1>phenocor.ontology package<a class="headerlink" href="#phenocor-ontology-package" title="Link to this heading"></a></h1>
+<section id="module-phenocor.ontology._hpo_hierarchy">
+<span id="phenocor-ontology-hierarchy-module"></span><h2>phenocor.ontology.hierarchy module<a class="headerlink" href="#module-phenocor.ontology._hpo_hierarchy" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">HPOHierarchyEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hpo_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Apply HPO hierarchy-aware operations to phenotype status matrices.</p>
+<p>The engine provides two main operations:</p>
+<ul class="simple">
+<li><p>propagation of observed and excluded phenotype annotations through
+the HPO hierarchy;</p></li>
+<li><p>construction of a pairwise mask for excluding ontologically related
+HPO terms from downstream correlation analysis.</p></li>
+</ul>
+<p>Phenotype status matrices are expected to contain:</p>
+<blockquote>
+<div><p>1 = observed
+0 = excluded
+NaN = unknown</p>
+</div></blockquote>
+<p>Before propagation, HPO term IDs are resolved to canonical primary IDs.
+Invalid HPO terms are removed, and columns resolving to the same
+canonical HPO term are merged.</p>
+<p class="rubric">Notes</p>
+<p>Propagation is restricted to HPO terms represented in the input matrix.
+Observed annotations propagate to represented ancestors, while excluded
+annotations propagate to represented descendants.</p>
+<p>Explicit annotations are preserved when they conflict with propagated
+annotations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.build_relationship_mask">
+<span class="sig-name descname"><span class="pre">build_relationship_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hpo_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.build_relationship_mask" title="Link to this definition"></a></dt>
+<dd><p>Build a pairwise mask for ontologically related HPO terms.</p>
+<p>Self-pairs and ancestor-descendant pairs are marked as <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.
+Unrelated HPO term pairs are marked as <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>The mask is intended to exclude structurally related HPO term
+pairs from downstream correlation analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hpo_ids</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – Canonical HPO term IDs, typically corresponding to columns of
+a propagated phenotype matrix. Input order is preserved.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Square matrix indexed and columned by <code class="docutils literal notranslate"><span class="pre">hpo_ids</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NaN</span></code> indicates a self-pair or ancestor-descendant pair;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> indicates a pair eligible for downstream evaluation with</p></li>
+</ul>
+<p>respect to ontology structure.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.get_labels">
+<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.get_labels" title="Link to this definition"></a></dt>
+<dd><p>Return labels for HPO terms prepared by this engine.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.hpo">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">hpo</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">MinimalOntology</span></span><a class="headerlink" href="#phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.hpo" title="Link to this definition"></a></dt>
+<dd><p>Return the underlying HPO ontology.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.propagate">
+<span class="sig-name descname"><span class="pre">propagate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#phenocor.ontology._hpo_hierarchy.HPOHierarchyEngine.propagate" title="Link to this definition"></a></dt>
+<dd><p>Propagate phenotype annotations through the ontology hierarchy.</p>
+<p>Observed annotations (<code class="docutils literal notranslate"><span class="pre">1</span></code>) propagate upward to represented
+ancestor terms. Excluded annotations (<code class="docutils literal notranslate"><span class="pre">0</span></code>) propagate downward
+to represented descendant terms.</p>
+<p>Before propagation, HPO term IDs are resolved to canonical primary
+IDs. Invalid terms are removed. If multiple input columns resolve
+to the same canonical HPO term, they are merged. When conflicting
+values occur during this merge, observed status (<code class="docutils literal notranslate"><span class="pre">1</span></code>) takes
+precedence and a warning is emitted.</p>
+<p>Propagation only fills previously unknown values (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>).
+Therefore, explicit observed or excluded annotations are never
+overwritten by propagated values. Conflicts between explicit and
+propagated annotations are reported as warnings.</p>
+<p>When both observed and excluded states are inferred for an unknown
+value, observed status takes precedence and a warning is emitted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrix</strong> (<em>pd.DataFrame</em>) – Phenotype status matrix with individuals as rows and HPO term
+IDs as columns. Values must be <code class="docutils literal notranslate"><span class="pre">1</span></code> (observed), <code class="docutils literal notranslate"><span class="pre">0</span></code>
+(excluded), or <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (unknown).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Phenotype status matrix with canonical HPO term IDs and
+hierarchy-propagated annotations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="phenocor.analysis.html" class="btn btn-neutral float-left" title="phenocor.analysis package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jing Chen.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

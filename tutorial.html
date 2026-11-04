@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FBN1 Cohort Analysis: Correlation and Synergy &mdash; phenosign 0.1.5 documentation</title>
+  <title>FBN1 Cohort Analysis: Correlation &mdash; phenocor 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c6c3d6f6" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=59fadc99"></script>
+      <script src="_static/documentation_options.js?v=938c9ccc"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -37,7 +37,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            phenosign
+            phenocor
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -53,14 +53,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">FBN1 Cohort Analysis: Correlation and Synergy</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FBN1 Cohort Analysis: Correlation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#1.-Load-phenopackets">1. Load phenopackets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#2.-Build-the-dataset">2. Build the dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#3.-Correlation-analysis">3. Correlation analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#4.-Visualize-correlation-results">4. Visualize correlation results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#5.-Inspect-available-targets">5. Inspect available targets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#6.-Synergy-analysis">6. Synergy analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#7.-Visualize-synergy-results">7. Visualize synergy results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Summary">Summary</a></li>
 </ul>
 </li>
@@ -69,11 +66,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/dataset.html">Build Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/correlation.html">Correlation Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/synergy.html">Synergy Analysis</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/phenosign.html">phenosign API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/phenocor.html">phenocor API</a></li>
 </ul>
 
         </div>
@@ -82,7 +78,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">phenosign</a>
+          <a href="index.html">phenocor</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -90,7 +86,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">FBN1 Cohort Analysis: Correlation and Synergy</li>
+      <li class="breadcrumb-item active">FBN1 Cohort Analysis: Correlation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/tutorial.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,14 +96,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="FBN1-Cohort-Analysis:-Correlation-and-Synergy">
-<h1>FBN1 Cohort Analysis: Correlation and Synergy<a class="headerlink" href="#FBN1-Cohort-Analysis:-Correlation-and-Synergy" title="Link to this heading"></a></h1>
+  <section id="FBN1-Cohort-Analysis:-Correlation">
+<h1>FBN1 Cohort Analysis: Correlation<a class="headerlink" href="#FBN1-Cohort-Analysis:-Correlation" title="Link to this heading"></a></h1>
 <p>In this tutorial, we analyze a cohort of phenopackets associated with the gene <strong>FBN1</strong>. The example data is retrieved from the <a class="reference external" href="https://github.com/monarch-initiative/phenopacket-store">phenopacket store</a>.</p>
-<p>Using this dataset, we demonstrate a complete workflow with <strong>phenosign</strong>, including:</p>
+<p>Using this dataset, we demonstrate a complete workflow with <strong>phenocor</strong>, including:</p>
 <ul class="simple">
 <li><p>dataset construction</p></li>
 <li><p>correlation analysis</p></li>
-<li><p>synergy analysis of phenotypic features</p></li>
 </ul>
 <p>We recommend running this tutorial in a <strong>Jupyter notebook</strong> for interactive exploration and visualization, although it can also be executed as a standard Python script.</p>
 <section id="1.-Load-phenopackets">
@@ -136,7 +131,7 @@
 Loaded 143 phenopackets
 </pre></div></div>
 </div>
-<p>The function <code class="docutils literal notranslate"><span class="pre">load_phenopackets_by_cohort</span></code> provides convenient access to publicly available datasets from the phenopacket store.</p>
+<p>The registry provides access to Phenopacket Store cohorts through iter_cohort_phenopackets().</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line"><strong>Note：</strong></div>
@@ -147,26 +142,17 @@ Loaded 143 phenopackets
 <section id="2.-Build-the-dataset">
 <h2>2. Build the dataset<a class="headerlink" href="#2.-Build-the-dataset" title="Link to this heading"></a></h2>
 <p>Next, we convert phenopackets into a structured dataset suitable for downstream statistical analysis.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhenotypeDatasetBuilder</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenocor</span><span class="w"> </span><span class="kn">import</span> <span class="n">PhenotypeDatasetBuilder</span>
 
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">PhenotypeDatasetBuilder</span><span class="p">(</span><span class="n">phenopackets</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Individuals Processed: 100%|██████████| 143/143 [00:00&lt;00:00, 418.38 individuals/s]
-</pre></div></div>
-</div>
-<p>The parameters specify the transcript of interest, the variant class to include. Detailed explanations are provided in the <strong>Usage</strong> section.</p>
-<p>The resulting <code class="docutils literal notranslate"><span class="pre">dataset</span></code> is now ready for correlation and synergy analysis.</p>
+<p>The resulting <code class="docutils literal notranslate"><span class="pre">dataset</span></code> is now ready for correlation.</p>
 </section>
 <section id="3.-Correlation-analysis">
 <h2>3. Correlation analysis<a class="headerlink" href="#3.-Correlation-analysis" title="Link to this heading"></a></h2>
@@ -175,13 +161,13 @@ Individuals Processed: 100%|██████████| 143/143 [00:00&lt;00
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="n">HPOCorrelationAnalyzer</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenocor</span><span class="w"> </span><span class="kn">import</span> <span class="n">HPOCorrelationAnalyzer</span>
 
 <span class="n">analyzer</span> <span class="o">=</span> <span class="n">HPOCorrelationAnalyzer</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">compute_correlation_matrix</span><span class="p">()</span>
 
-<span class="n">results</span><span class="o">.</span><span class="n">results_table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">results</span><span class="o">.</span><span class="n">correlation_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -190,7 +176,7 @@ Individuals Processed: 100%|██████████| 143/143 [00:00&lt;00
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Calculating pairwise correlation: 100%|██████████| 728/728 [00:01&lt;00:00, 417.11it/s]
+Calculating pairwise correlations:   0%|          | 0/728 [00:00&lt;?, ?it/s]Calculating pairwise correlations: 100%|██████████| 728/728 [00:02&lt;00:00, 325.56it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -217,9 +203,7 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
     <tr style="text-align: right;">
       <th></th>
       <th>HPO_A</th>
-      <th>HPO_A_label</th>
       <th>HPO_B</th>
-      <th>HPO_B_label</th>
       <th>correlation</th>
       <th>p_value</th>
       <th>adj_p_value</th>
@@ -228,17 +212,17 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
       <th>n(A:O/B:E)</th>
       <th>n(A:O/B:O)</th>
       <th>n_individuals</th>
+      <th>HPO_A_label</th>
+      <th>HPO_B_label</th>
       <th>n_pmids</th>
       <th>pmids</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>467</th>
+      <th>0</th>
       <td>HP:0004322</td>
-      <td>Short stature</td>
       <td>HP:0004942</td>
-      <td>Aortic aneurysm</td>
       <td>-0.827131</td>
       <td>2.049015e-14</td>
       <td>9.773799e-12</td>
@@ -247,15 +231,15 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
       <td>33</td>
       <td>0</td>
       <td>74</td>
+      <td>Short stature</td>
+      <td>Aortic aneurysm</td>
       <td>5</td>
       <td>10756346;11175294;12203992;20375004;21683322</td>
     </tr>
     <tr>
-      <th>50</th>
+      <th>1</th>
       <td>HP:0000098</td>
-      <td>Tall stature</td>
       <td>HP:0004942</td>
-      <td>Aortic aneurysm</td>
       <td>0.796637</td>
       <td>1.940118e-13</td>
       <td>4.627183e-11</td>
@@ -264,15 +248,15 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
       <td>1</td>
       <td>26</td>
       <td>79</td>
+      <td>Tall stature</td>
+      <td>Aortic aneurysm</td>
       <td>13</td>
       <td>10756346;11175294;12203992;20375004;20979188;2...</td>
     </tr>
     <tr>
-      <th>48</th>
+      <th>2</th>
       <td>HP:0000098</td>
-      <td>Tall stature</td>
       <td>HP:0004322</td>
-      <td>Short stature</td>
       <td>-0.685681</td>
       <td>5.424742e-12</td>
       <td>8.625340e-10</td>
@@ -281,15 +265,15 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
       <td>37</td>
       <td>0</td>
       <td>86</td>
+      <td>Tall stature</td>
+      <td>Short stature</td>
       <td>5</td>
       <td>10756346;11175294;12203992;20375004;21683322</td>
     </tr>
     <tr>
-      <th>44</th>
+      <th>3</th>
       <td>HP:0000098</td>
-      <td>Tall stature</td>
       <td>HP:0002616</td>
-      <td>Aortic root aneurysm</td>
       <td>0.646903</td>
       <td>1.766457e-11</td>
       <td>2.106500e-09</td>
@@ -298,15 +282,15 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
       <td>10</td>
       <td>26</td>
       <td>113</td>
+      <td>Tall stature</td>
+      <td>Aortic root aneurysm</td>
       <td>18</td>
       <td>10756346;11175294;12203992;20375004;20979188;2...</td>
     </tr>
     <tr>
-      <th>439</th>
+      <th>4</th>
       <td>HP:0002616</td>
-      <td>Aortic root aneurysm</td>
       <td>HP:0004322</td>
-      <td>Short stature</td>
       <td>-0.634615</td>
       <td>2.474657e-10</td>
       <td>2.360823e-08</td>
@@ -315,6 +299,8 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
       <td>33</td>
       <td>0</td>
       <td>85</td>
+      <td>Aortic root aneurysm</td>
+      <td>Short stature</td>
       <td>5</td>
       <td>10756346;11175294;12203992;20375004;21683322</td>
     </tr>
@@ -322,12 +308,12 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
 </table>
 </div></div>
 </div>
-<p>This step identifies pairs of HPO terms that tend to co-occur or show mutually exclusive patterns.</p>
+<p>This step identifies positive and negative associations between HPO terms.</p>
 <p>In the result table:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">HPO_A</span></code> and <code class="docutils literal notranslate"><span class="pre">HPO_B</span></code> are the two HPO terms being compared</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">correlation</span></code> indicates the strength and direction of association</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">p_value_corrected</span></code> provides the adjusted significance level</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adj_p_value</span></code> is the Benjamini–Hochberg-adjusted p-value.</p></li>
 </ul>
 <p>Interpretation:</p>
 <ul class="simple">
@@ -362,11 +348,11 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig1</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">plot_correlation_heatmap_with_significance</span><span class="p">(</span>
-    <span class="n">title_name</span><span class="o">=</span><span class="s2">"Cohort FBN1"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Cohort FBN1"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -395,667 +381,7 @@ Calculating pairwise correlation: 100%|██████████| 728/728 [
 <div><div class="line-block">
 <div class="line"><strong>Note：</strong></div>
 <div class="line">Hover over the heatmap to see detailed information for each phenotype pair.</div>
-<div class="line">The thresholds control which interactions are displayed. Lower thresholds include more pairs, while higher thresholds focus on the strongest signals.</div>
-</div>
-</div></blockquote>
-</section>
-<section id="5.-Inspect-available-targets">
-<h2>5. Inspect available targets<a class="headerlink" href="#5.-Inspect-available-targets" title="Link to this heading"></a></h2>
-<p>Before running synergy analysis, we inspect the available target variables in the dataset.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">describe_conditions</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>category</th>
-      <th>item</th>
-      <th>n_individuals</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Disease</td>
-      <td>Marfan syndrome [OMIM:154700]</td>
-      <td>50 (35.0%)</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Disease</td>
-      <td>Ectopia lentis, familial [OMIM:129600]</td>
-      <td>44 (30.8%)</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Disease</td>
-      <td>Geleophysic dysplasia 2 [OMIM:614185]</td>
-      <td>19 (13.3%)</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Disease</td>
-      <td>Acromicric dysplasia [OMIM:102370]</td>
-      <td>13 (9.1%)</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Disease</td>
-      <td>Marfan lipodystrophy syndrome [OMIM:616914]</td>
-      <td>9 (6.3%)</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Disease</td>
-      <td>Stiff skin syndrome [OMIM:184900]</td>
-      <td>8 (5.6%)</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Sex</td>
-      <td>female</td>
-      <td>57 (39.9%)</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Sex</td>
-      <td>male</td>
-      <td>54 (37.8%)</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Sex</td>
-      <td>unknown</td>
-      <td>32 (22.4%)</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Gene</td>
-      <td>FBN1</td>
-      <td>143 (100.0%)</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Variant effect</td>
-      <td>MISSENSE_VARIANT — NM_000138.5</td>
-      <td>119 (78.8%)</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Variant effect</td>
-      <td>STOP_GAINED — NM_000138.5</td>
-      <td>4 (2.6%)</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Variant effect</td>
-      <td>FRAMESHIFT_VARIANT — NM_000138.5</td>
-      <td>7 (4.6%)</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Variant effect</td>
-      <td>INFRAME_DELETION — NM_000138.5</td>
-      <td>1 (0.7%)</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Variant effect</td>
-      <td>SPLICE_DONOR_5TH_BASE_VARIANT — NM_000138.5</td>
-      <td>1 (0.7%)</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>Variant effect</td>
-      <td>INTRON_VARIANT — NM_000138.5</td>
-      <td>2 (1.3%)</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>Variant effect</td>
-      <td>SPLICE_ACCEPTOR_VARIANT — NM_000138.5</td>
-      <td>2 (1.3%)</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>Variant effect</td>
-      <td>SPLICE_DONOR_VARIANT — NM_000138.5</td>
-      <td>6 (4.0%)</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>Variant effect</td>
-      <td>SPLICE_REGION_VARIANT — NM_000138.5</td>
-      <td>6 (4.0%)</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>Variant effect</td>
-      <td>SPLICE_DONOR_REGION_VARIANT — NM_000138.5</td>
-      <td>1 (0.7%)</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>Variant effect</td>
-      <td>SYNONYMOUS_VARIANT — NM_000138.5</td>
-      <td>1 (0.7%)</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>Variant effect</td>
-      <td>INFRAME_INSERTION — NM_000138.5</td>
-      <td>1 (0.7%)</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<p>This summary shows which target variables (e.g., disease labels or variant conditions) can be used for downstream analysis.</p>
-<p>These targets define the conditions under which phenotype–phenotype relationships are evaluated in the synergy analysis.</p>
-<p>In other words, synergy analysis asks whether the association between two phenotypes changes across different conditions (e.g., variant classes or disease groups).</p>
-</section>
-<section id="6.-Synergy-analysis">
-<h2>6. Synergy analysis<a class="headerlink" href="#6.-Synergy-analysis" title="Link to this heading"></a></h2>
-<p>While correlation captures overall associations between phenotypes, it does not account for how these relationships may differ across conditions.</p>
-<p>Synergy analysis addresses this by evaluating whether the association between two phenotypes changes depending on a target variable (e.g., variant class or disease group).</p>
-<p>We begin by initializing the synergy analyzer:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="n">SynergyAnalyzer</span>
-
-<span class="n">synergy_analyzer</span> <span class="o">=</span> <span class="n">SynergyAnalyzer</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Next, we compute the synergy matrix for the selected target:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gpsea.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">VariantEffect</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="n">has_variant_effect</span>
-<span class="n">condition</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_variant_condition</span><span class="p">(</span><span class="n">has_variant_effect</span><span class="p">(</span><span class="n">transcript_id</span> <span class="o">=</span> <span class="s2">"NM_000138.5"</span><span class="p">,</span>
-    <span class="n">variant_effect</span><span class="o">=</span><span class="n">VariantEffect</span><span class="o">.</span><span class="n">MISSENSE_VARIANT</span><span class="p">)</span>
-<span class="p">)</span>
-<br/></pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_variant</span> <span class="o">=</span> <span class="n">synergy_analyzer</span><span class="o">.</span><span class="n">compute_synergy_matrix</span><span class="p">(</span>
-    <span class="n">condition</span><span class="o">=</span><span class="n">condition</span>
-<span class="p">)</span>
-
-<span class="n">results_variant</span><span class="o">.</span><span class="n">results_table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Calculating pairwise synergy: 100%|██████████| 606/606 [03:05&lt;00:00,  3.27it/s]
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>HPO_A</th>
-      <th>HPO_A_label</th>
-      <th>HPO_B</th>
-      <th>HPO_B_label</th>
-      <th>synergy</th>
-      <th>p_value</th>
-      <th>adj_p_value</th>
-      <th>n(A:E/B:E)_y0</th>
-      <th>n(A:E/B:O)_y0</th>
-      <th>n(A:O/B:E)_y0</th>
-      <th>n(A:O/B:O)_y0</th>
-      <th>N_y0</th>
-      <th>n(A:E/B:E)_y1</th>
-      <th>n(A:E/B:O)_y1</th>
-      <th>n(A:O/B:E)_y1</th>
-      <th>n(A:O/B:O)_y1</th>
-      <th>N_y1</th>
-      <th>n_individuals</th>
-      <th>n_pmids</th>
-      <th>pmids</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>39</th>
-      <td>HP:0000098</td>
-      <td>Tall stature</td>
-      <td>HP:0002650</td>
-      <td>Scoliosis</td>
-      <td>0.148600</td>
-      <td>0.0002</td>
-      <td>0.016157</td>
-      <td>2</td>
-      <td>4</td>
-      <td>7</td>
-      <td>2</td>
-      <td>15</td>
-      <td>36</td>
-      <td>1</td>
-      <td>12</td>
-      <td>16</td>
-      <td>65</td>
-      <td>80</td>
-      <td>11</td>
-      <td>10756346;11175294;12203992;20375004;22219643;2...</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>HP:0000098</td>
-      <td>Tall stature</td>
-      <td>HP:0001382</td>
-      <td>Joint hypermobility</td>
-      <td>0.106631</td>
-      <td>0.0002</td>
-      <td>0.016157</td>
-      <td>2</td>
-      <td>4</td>
-      <td>6</td>
-      <td>2</td>
-      <td>14</td>
-      <td>58</td>
-      <td>2</td>
-      <td>12</td>
-      <td>17</td>
-      <td>89</td>
-      <td>103</td>
-      <td>12</td>
-      <td>10756346;11175294;12203992;20979188;21594992;2...</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>HP:0000098</td>
-      <td>Tall stature</td>
-      <td>HP:0001187</td>
-      <td>Hyperextensibility of the finger joints</td>
-      <td>0.041146</td>
-      <td>0.0002</td>
-      <td>0.016157</td>
-      <td>2</td>
-      <td>3</td>
-      <td>6</td>
-      <td>0</td>
-      <td>11</td>
-      <td>58</td>
-      <td>0</td>
-      <td>12</td>
-      <td>0</td>
-      <td>70</td>
-      <td>81</td>
-      <td>12</td>
-      <td>10756346;11175294;12203992;20979188;21594992;2...</td>
-    </tr>
-    <tr>
-      <th>277</th>
-      <td>HP:0001187</td>
-      <td>Hyperextensibility of the finger joints</td>
-      <td>HP:0001519</td>
-      <td>Disproportionate tall stature</td>
-      <td>0.028099</td>
-      <td>0.0002</td>
-      <td>0.016157</td>
-      <td>4</td>
-      <td>5</td>
-      <td>3</td>
-      <td>0</td>
-      <td>12</td>
-      <td>67</td>
-      <td>4</td>
-      <td>0</td>
-      <td>0</td>
-      <td>71</td>
-      <td>83</td>
-      <td>11</td>
-      <td>10756346;11175294;12203992;20979188;21594992;2...</td>
-    </tr>
-    <tr>
-      <th>291</th>
-      <td>HP:0001382</td>
-      <td>Joint hypermobility</td>
-      <td>HP:0001519</td>
-      <td>Disproportionate tall stature</td>
-      <td>0.078793</td>
-      <td>0.0002</td>
-      <td>0.016157</td>
-      <td>4</td>
-      <td>5</td>
-      <td>5</td>
-      <td>1</td>
-      <td>15</td>
-      <td>67</td>
-      <td>4</td>
-      <td>9</td>
-      <td>10</td>
-      <td>90</td>
-      <td>105</td>
-      <td>11</td>
-      <td>10756346;11175294;12203992;20979188;21594992;2...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenosign</span><span class="w"> </span><span class="kn">import</span> <span class="n">has_disease</span>
-<span class="n">condition_disease</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_condition</span><span class="p">(</span><span class="n">has_disease</span><span class="p">(</span><span class="s2">"OMIM:154700"</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"disease:Marfan syndrome"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_disease</span> <span class="o">=</span> <span class="n">synergy_analyzer</span><span class="o">.</span><span class="n">compute_synergy_matrix</span><span class="p">(</span>
-    <span class="n">condition</span><span class="o">=</span><span class="n">condition_disease</span>
-<span class="p">)</span>
-<span class="n">results_disease</span><span class="o">.</span><span class="n">results_table</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Calculating pairwise synergy: 100%|██████████| 606/606 [01:44&lt;00:00,  5.78it/s]
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>HPO_A</th>
-      <th>HPO_A_label</th>
-      <th>HPO_B</th>
-      <th>HPO_B_label</th>
-      <th>synergy</th>
-      <th>p_value</th>
-      <th>adj_p_value</th>
-      <th>n(A:E/B:E)_y0</th>
-      <th>n(A:E/B:O)_y0</th>
-      <th>n(A:O/B:E)_y0</th>
-      <th>n(A:O/B:O)_y0</th>
-      <th>N_y0</th>
-      <th>n(A:E/B:E)_y1</th>
-      <th>n(A:E/B:O)_y1</th>
-      <th>n(A:O/B:E)_y1</th>
-      <th>n(A:O/B:O)_y1</th>
-      <th>N_y1</th>
-      <th>n_individuals</th>
-      <th>n_pmids</th>
-      <th>pmids</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>180</th>
-      <td>HP:0001519</td>
-      <td>Disproportionate tall stature</td>
-      <td>HP:0004959</td>
-      <td>Descending thoracic aorta aneurysm</td>
-      <td>0.073524</td>
-      <td>0.0002</td>
-      <td>0.00103</td>
-      <td>45</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>45</td>
-      <td>0</td>
-      <td>1</td>
-      <td>5</td>
-      <td>0</td>
-      <td>6</td>
-      <td>51</td>
-      <td>8</td>
-      <td>10756346;20375004;21594992;21683322;24039054;2...</td>
-    </tr>
-    <tr>
-      <th>181</th>
-      <td>HP:0001519</td>
-      <td>Disproportionate tall stature</td>
-      <td>HP:0008848</td>
-      <td>Moderately short stature</td>
-      <td>-0.045049</td>
-      <td>0.0002</td>
-      <td>0.00103</td>
-      <td>27</td>
-      <td>9</td>
-      <td>0</td>
-      <td>0</td>
-      <td>36</td>
-      <td>29</td>
-      <td>0</td>
-      <td>21</td>
-      <td>0</td>
-      <td>50</td>
-      <td>86</td>
-      <td>5</td>
-      <td>10756346;11175294;12203992;20375004;21683322</td>
-    </tr>
-    <tr>
-      <th>229</th>
-      <td>HP:0003502</td>
-      <td>Mild short stature</td>
-      <td>HP:0003510</td>
-      <td>Severe short stature</td>
-      <td>0.016259</td>
-      <td>0.0002</td>
-      <td>0.00103</td>
-      <td>16</td>
-      <td>18</td>
-      <td>2</td>
-      <td>0</td>
-      <td>36</td>
-      <td>50</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>50</td>
-      <td>86</td>
-      <td>5</td>
-      <td>10756346;11175294;12203992;20375004;21683322</td>
-    </tr>
-    <tr>
-      <th>163</th>
-      <td>HP:0001382</td>
-      <td>Joint hypermobility</td>
-      <td>HP:0003510</td>
-      <td>Severe short stature</td>
-      <td>-0.133008</td>
-      <td>0.0002</td>
-      <td>0.00103</td>
-      <td>11</td>
-      <td>18</td>
-      <td>0</td>
-      <td>0</td>
-      <td>29</td>
-      <td>26</td>
-      <td>0</td>
-      <td>22</td>
-      <td>0</td>
-      <td>48</td>
-      <td>77</td>
-      <td>4</td>
-      <td>10756346;11175294;12203992;21683322</td>
-    </tr>
-    <tr>
-      <th>164</th>
-      <td>HP:0001382</td>
-      <td>Joint hypermobility</td>
-      <td>HP:0004322</td>
-      <td>Short stature</td>
-      <td>-0.251557</td>
-      <td>0.0002</td>
-      <td>0.00103</td>
-      <td>0</td>
-      <td>32</td>
-      <td>0</td>
-      <td>0</td>
-      <td>32</td>
-      <td>26</td>
-      <td>0</td>
-      <td>22</td>
-      <td>0</td>
-      <td>48</td>
-      <td>80</td>
-      <td>4</td>
-      <td>10756346;11175294;12203992;21683322</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<p>The resulting table reports pairwise synergy scores between HPO terms with respect to the selected target.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">HPO_A</span></code> and <code class="docutils literal notranslate"><span class="pre">HPO_B</span></code> are the two phenotypes being evaluated</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">synergy</span></code> measures how much additional information the pair provides about the target compared to individual features</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">p_value_corrected</span></code> indicates statistical significance after multiple testing correction</p></li>
-</ul>
-<p>Interpretation:</p>
-<ul class="simple">
-<li><p><strong>positive synergy</strong> → the two phenotypes jointly provide additional information about the target</p></li>
-<li><p><strong>near zero</strong> → the phenotypes contribute largely independently</p></li>
-<li><p><strong>negative synergy</strong> → the phenotypes are redundant with respect to the target</p></li>
-</ul>
-<p>Detailed descriptions of all output columns are provided in the <strong>Usage</strong> section.</p>
-</section>
-<section id="7.-Visualize-synergy-results">
-<h2>7. Visualize synergy results<a class="headerlink" href="#7.-Visualize-synergy-results" title="Link to this heading"></a></h2>
-<p>We can visualize synergy results as a heatmap.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig2</span> <span class="o">=</span> <span class="n">results_variant</span><span class="o">.</span><span class="n">plot_synergy_heatmap</span><span class="p">(</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotly_html_link</span><span class="p">(</span><span class="n">fig2</span><span class="p">,</span> <span class="s2">"synergy_heatmap.html"</span><span class="p">,</span> <span class="n">link_text</span><span class="o">=</span><span class="s2">"Click here to view interactive synergy heatmap"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<p>To view the interactive plot, click the link below:</p><a href="_static/synergy_heatmap.html" target="_blank">Click here to view interactive synergy heatmap</a></div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig3</span> <span class="o">=</span> <span class="n">results_disease</span><span class="o">.</span><span class="n">plot_synergy_heatmap</span><span class="p">(</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotly_html_link</span><span class="p">(</span><span class="n">fig3</span><span class="p">,</span> <span class="s2">"synergy_heatmap_disease.html"</span><span class="p">,</span> <span class="n">link_text</span><span class="o">=</span><span class="s2">"Click here to view interactive synergy heatmap for Marfan syndrome"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<p>To view the interactive plot, click the link below:</p><a href="_static/synergy_heatmap_disease.html" target="_blank">Click here to view interactive synergy heatmap for Marfan syndrome</a></div>
-</div>
-<p>This visualization highlights phenotype pairs that show strong and statistically significant synergy with respect to the selected target.</p>
-<blockquote>
-<div><div class="line-block">
-<div class="line"><strong>Note：</strong></div>
-<div class="line">Hover over the heatmap to see detailed information for each phenotype pair.</div>
-<div class="line">The thresholds control which interactions are displayed. Lower thresholds include more pairs, while higher thresholds focus on the strongest signals.</div>
+<div class="line">Increasing the adjusted p-value threshold includes more pairs. Increasing the minimum absolute Phi coefficient retains stronger associations..</div>
 </div>
 </div></blockquote>
 </section>
@@ -1066,9 +392,8 @@ Calculating pairwise synergy: 100%|██████████| 606/606 [01:4
 <li><p>Loaded phenopacket data</p></li>
 <li><p>Constructed a structured dataset</p></li>
 <li><p>Explored phenotype–phenotype relationships using correlation</p></li>
-<li><p>Identified condition-specific interactions using synergy analysis</p></li>
 </ul>
-<p>Together, these steps provide a workflow for uncovering both global and condition-dependent relationships between phenotypic features.</p>
+<p>Together, these steps demonstrate phenotype correlation analysis within the FBN1 cohort.</p>
 <p>For additional usage patterns and parameter options, see the <strong>Usage</strong> section.</p>
 </section>
 </section>
