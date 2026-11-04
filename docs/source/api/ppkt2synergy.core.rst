@@ -1,34 +1,18 @@
-phenosign.core package
+phenocor.core package
 =========================
 
-phenosign.core.dataset module
---------------------------------
+phenocor.core.dataset module
+------------------------------------
 
-.. automodule:: phenosign.core.dataset
+.. automodule:: phenocor.core.dataset
    :members:
    :undoc-members:
    :show-inheritance:
 
-phenosign.core.features module
----------------------------------
+phenocor.core.builder module
+------------------------------------
 
-.. automodule:: phenosign.core.features
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-phenosign.core.predicates module
------------------------------------
-
-.. automodule:: phenosign.core.predicates
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-phenosign.core.builder module
------------------------------------
-
-.. automodule:: phenosign.core.builder
+.. automodule:: phenocor.core.builder
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,101 +1,101 @@
 Build Dataset
 =============
 
-The ``PhenotypeDatasetBuilder`` converts raw phenopackets conforming to the `GA4GH Phenopacket schema <https://phenopacket-schema.readthedocs.io/en/latest/index.html>`_ into a structured representation that can be used for correlation and synergy analysis.
+The ``PhenotypeDatasetBuilder`` converts Phenopackets conforming to the
+`GA4GH Phenopacket Schema <https://phenopacket-schema.readthedocs.io/en/latest/>`_
+into an analysis-ready ``PhenotypeDataset`` for phenotype correlation analysis.
+
+The builder extracts HPO annotations as observed, excluded, or unreported states. 
+Observed states propagate to ancestor terms, and excluded states propagate to 
+descendant terms, restricted to terms represented in the dataset. Unreported states 
+remain unknown unless an observed or excluded state can be inferred through HPO 
+propagation.
+
+This example builds a single dataset from all Phenopackets in the directory. 
+For disease-specific analyses, select individuals with the relevant disease 
+before building the dataset.
 
 
 Core usage
 ----------
 
-To build a dataset, you must first load your local phenopacket JSON files using standard 
-Python utilities (e.g., ``pathlib`` and official ``phenopackets`` protobuf parsers), and 
-then pass the resulting list into the builder.
+Phenopackets can be loaded from JSON files using the official
+``phenopackets`` protobuf classes and ``google.protobuf`` utilities.
+
 
 .. code-block:: python
 
     from pathlib import Path
     from google.protobuf.json_format import Parse
     from phenopackets import Phenopacket
-    from phenosign import PhenotypeDatasetBuilder
+    from phenocor import PhenotypeDatasetBuilder
 
-    # 1. Locate your local phenopacket directory
-    phenopacket_dir = Path("path/to/your/fbn1_phenopackets/")
+    # Locate your local phenopacket directory
+    phenopacket_dir = Path("path/to/your/phenopackets/")
 
-    # 2. Iterate and parse JSON files into formal Phenopacket objects
+    # Iterate and parse JSON files into formal Phenopacket objects
     phenopackets = []
-    for file_path in phenopacket_dir.glob("*.json"):
+    for file_path in sorted(phenopacket_dir.glob("*.json")):
         with open(file_path, "r", encoding="utf-8") as f:
             data = f.read()
             phenopacket = Parse(data, Phenopacket())
             phenopackets.append(phenopacket)
 
-    # 3. Initialize the builder and construct the analysis-ready dataset
+    # Initialize the builder and construct the analysis-ready dataset
     builder = PhenotypeDatasetBuilder(phenopackets)
-    dataset = builder.build(
-        missing_threshold=0.9,
-        build_gpsea_cohort=True,
-    )
+    dataset = builder.build()
 
 
 Dataset overview
 ^^^^^^^^^^^^^^^^
 
-The resulting ``PhenotypeDataset`` contains three components:
+The resulting ``PhenotypeDataset`` contains four main components:
 
-- **hpo_data** — binary HPO feature matrix across individuals, with an optional
-  term relationship mask.
-- **phenopackets** — the original phenopacket objects, retained for reference
-  and downstream computations.
-- **gpsea_cohort** — a preprocessed GPSEA cohort object for variant-aware analyses
-  (present only when ``build_gpsea_cohort=True``).
+- **phenotype_matrix** — individual-level HPO data.
+- **hpo_labels** — HPO term labels.
+- **relationship_mask** — excludes identical terms and ancestor–descendant term pairs from correlation analysis.
+- **phenopackets** — the original phenopacket objects.
 
-Two index properties provide convenient access to the matrix dimensions:
+Individual and HPO identifiers are available through:
 
 .. code-block:: python
 
-    dataset.individual_ids   # pd.Index of subject identifiers (rows)
-    dataset.feature_ids      # pd.Index of HPO term identifiers (columns)
+    dataset.individual_ids
+    dataset.hpo_ids
+
+Associated PubMed and disease identifiers can be retrieved with:
+
+.. code-block:: python
+
+    dataset.get_pmids()
+    dataset.get_diseases()
 
 
-Key parameters
-^^^^^^^^^^^^^^
+HPO configuration
+-----------------
 
-``missing_threshold``
-  Controls which HPO terms are retained based on how often they are observed
-  across individuals.
+By default, the latest available HPO release is used.
 
-  ``missing_threshold=0.9`` keeps only HPO terms observed (or explicitly excluded)
-  in at least 10% of individuals. Set to ``1.0`` to retain all terms regardless
-  of missingness.
+A specific HPO release can be selected for reproducible analyses:
 
-``build_gpsea_cohort``
-  If ``True``, constructs a GPSEA-compatible cohort object and attaches it to
-  ``dataset.gpsea_cohort``. Required for variant-based condition analysis.
-  Defaults to ``True``.
+.. code-block:: python
 
+    builder = PhenotypeDatasetBuilder(
+        phenopackets,
+        hpo_release="v2023-10-09",
+    )
 
-Advanced usage
---------------
-
-Customizing HPO configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-By default, the builder utilizes internal ontology references. You can explicitly override 
-the HPO source file or pinpoint a specific historical release for reproducibility:
+Alternatively, a local HPO ontology file can be supplied:
 
 .. code-block:: python
 
     builder = PhenotypeDatasetBuilder(
         phenopackets,
         hpo_file="path/to/hp.json",
-        hpo_release="2023-10-09",
     )
 
 
 Next steps
 ----------
 
-After constructing the dataset:
-
-- See :doc:`correlation` to explore phenotype–phenotype relationships.
-- See :doc:`synergy` to identify condition-dependent adaptive synergy interactions.
+After constructing the dataset, see :doc:`correlation` to perform phenotype–phenotype correlation analysis.

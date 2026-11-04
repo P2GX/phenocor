@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from phenosign.ontology import HPOHierarchyEngine
+from phenocor.ontology import HPOHierarchyEngine
 
 
 TEST_DIR = pathlib.Path(__file__).parent.parent.resolve()
@@ -119,7 +119,9 @@ def test_build_relationship_mask(hpo_engine, toy_terms):
     terms = list(toy_terms)
 
     # optional but harmless: prepare terms for term manager cache
-    hpo_engine._term_manager.prepare_terms(set(terms))
+    hpo_engine.propagate(
+    pd.DataFrame([[np.nan] * len(terms)], columns=terms)
+    )
 
     mask = hpo_engine.build_relationship_mask(terms)
 
@@ -151,16 +153,12 @@ def test_build_relationship_mask_is_symmetric(hpo_engine, toy_terms):
 
 
 def test_get_labels_returns_dict(hpo_engine):
-    """
-    get_labels should return a dictionary.
-    """
+    df = pd.DataFrame({"HP:0001250": [1]})
+    hpo_engine.propagate(df)
+
     labels = hpo_engine.get_labels()
+
     assert isinstance(labels, dict)
+    assert "HP:0001250" in labels
+    assert labels["HP:0001250"]
 
-
-def test_get_id_mapping_returns_dict(hpo_engine):
-    """
-    get_id_mapping should return a dictionary.
-    """
-    mapping = hpo_engine.get_id_mapping()
-    assert isinstance(mapping, dict)

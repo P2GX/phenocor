@@ -1,11 +1,11 @@
-phenosign API
+phenocor API
 =================
 
-Core modules of phenosign.
+Core modules of phenocor.
 
 .. toctree::
    :maxdepth: 2
 
-   phenosign.core
-   phenosign.analysis
-   phenosign.ontology
+   phenocor.core
+   phenocor.analysis
+   phenocor.ontology

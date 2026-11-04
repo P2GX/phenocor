@@ -1,29 +1,30 @@
-phenosign
+phenocor
 ============
 
-**phenosign** is a Python library for analyzing correlations and synergy in
-`GA4GH Phenopacket <https://www.ga4gh.org/product/phenopackets/>`_ cohorts.
+**phenocor** is a Python library for analyzing phenotype correlations in
+`GA4GH Phenopacket <https://www.ga4gh.org/product/phenopackets/>`_
+cohorts using
+`Human Phenotype Ontology <https://hpo.jax.org/>`_ (HPO) annotations.
 
-It provides tools to systematically process
-`Human Phenotype Ontology <https://hpo.jax.org/>`_ (HPO) features,
-identify pairwise associations, and detect higher-order interactions
-relevant to diseases or variant conditions.
+It provides tools for building analysis-ready phenotype datasets,
+accounting for the HPO hierarchy, and identifying pairwise associations
+between phenotypic features.
 
 
 
 Overview
 --------
 
-Phenotypic features often co-occur or interact in complex ways across individuals.
-Understanding these relationships can provide insights into disease mechanisms,
-genotype-phenotype associations, and combinatorial biomarkers.
+Phenotypic features can show patterns of association across individuals. 
+Characterizing these relationships can help identify how phenotypes are 
+related within Phenopacket cohorts.
 
-**phenosign enables:**
+**phenocor enables:**
 
-- Construction of structured datasets from phenopacket cohorts
+- Construction of structured phenotype datasets from Phenopackets
+- Hierarchy-aware processing of HPO annotations
 - Pairwise correlation analysis of HPO terms
-- Detection of higher-order feature interactions (synergy)
-- Interactive visualization of correlation and synergy heatmaps
+- Interactive visualization of correlation heatmaps
 
 
 
@@ -33,17 +34,18 @@ Quick Example
 .. code-block:: python
 
    from pathlib import Path
-   import json
-   from phenosign import (
+   from google.protobuf.json_format import Parse
+   from phenopackets import Phenopacket
+   from phenocor import (
       PhenotypeDatasetBuilder,
       HPOCorrelationAnalyzer,
    )
 
    # Load phenopackets
-   phenopacket_dir = Path("path/to/your/fbn1_phenopackets/")
+   phenopacket_dir = Path("path/to/your/phenopackets/")
 
    phenopackets = []
-   for file_path in phenopacket_dir.glob("*.json"):
+   for file_path in sorted(phenopacket_dir.glob("*.json")):
       with open(file_path, "r", encoding="utf-8") as f:
          data: str = f.read()
          phenopacket: Phenopacket = Parse(data, Phenopacket())
@@ -55,9 +57,9 @@ Quick Example
    # Run correlation analysis
    analyzer = HPOCorrelationAnalyzer(dataset)
    results = analyzer.compute_correlation_matrix()
-   results.result_table.head()
+   results.correlation_results.head()
 
-This minimal example demonstrates the workflow:
+This example shows the basic workflow:
 
 **load phenopackets → build dataset → compute correlations**
 
@@ -81,10 +83,9 @@ This minimal example demonstrates the workflow:
 
    usage/dataset
    usage/correlation
-   usage/synergy
 
 .. toctree::
    :maxdepth: 1
    :caption: API Reference
 
-   api/phenosign
+   api/phenocor
