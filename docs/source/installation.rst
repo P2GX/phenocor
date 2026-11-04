@@ -6,7 +6,7 @@ Install from PyPI (recommended)
 
 .. code-block:: bash
 
-    pip install phenosign
+    pip install phenocor
 
 ---
 
@@ -25,8 +25,8 @@ Then clone the repository and install in editable mode:
 
 .. code-block:: bash
 
-    git clone https://github.com/P2GX/phenosign.git
-    cd phenosign
+    git clone https://github.com/P2GX/phenocor.git
+    cd phenocor
     pip install -e .
 
 ---
