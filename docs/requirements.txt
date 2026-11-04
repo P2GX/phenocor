@@ -12,6 +12,6 @@ phenopackets
 scikit-learn
 kaleido
 gpsea
-joblib      
+joblib
 tqdm
 statsmodels

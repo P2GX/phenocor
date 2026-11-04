@@ -5,10 +5,10 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'phenosign'
+project = 'phenocor'
 copyright = '2026, Jing Chen'
 author = 'Jing Chen'
-release = '0.1.5'
+release = '0.2.0'
 
 # -- General configuration ---------------------------------------------------
 

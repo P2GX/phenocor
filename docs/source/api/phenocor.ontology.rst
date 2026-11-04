@@ -1,10 +1,10 @@
-phenosign.ontology package
+phenocor.ontology package
 =============================
 
-phenosign.ontology.hierarchy module
+phenocor.ontology.hierarchy module
 --------------------------------------
 
-.. automodule:: phenosign.ontology._hpo_hierarchy
+.. automodule:: phenocor.ontology._hpo_hierarchy
    :members:
    :undoc-members:
    :show-inheritance:

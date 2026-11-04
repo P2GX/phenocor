@@ -1,29 +1,15 @@
 Correlation Analysis
 ====================
 
-Once a dataset has been constructed, pairwise associations between HPO terms
-can be quantified using ``HPOCorrelationAnalyzer``.
+Pairwise associations between HPO terms can be analyzed using
+``HPOCorrelationAnalyzer``.
 
-
-What is correlation?
---------------------
-
-Correlation measures the association between two phenotypes:
-
-- **positive values** → phenotypes tend to co-occur  
-- **negative values** → phenotypes tend to occur in different individuals  
-- **values near zero** → little or no association  
-
-
-Correlation methods
--------------------
-
-The analyzer supports correlation measures specifically optimized for binary (presence/absence) phenotype data:
-
-- ``PHI`` — Phi coefficient ($\phi$), which mathematically equivalent to Pearson correlation for two binary variables. It measures the strength and direction of linear association between HPO terms.
-- ``FISHER`` — Fisher's Exact Test, which computes the exact hypergeometric probability of the contingency table. It provides highly robust p-values alongside odds ratios, making it the preferred method for testing non-random associations in low-frequency HPO terms.
-
-For most clinical phenotypes, ``FISHER`` provides a reliable statistical significance cutoff, while ``PHI`` serves as an excellent standardized effect size for downstream network visualizations.
+For each pair, individuals with an unknown state for either term are
+excluded. Self-pairs, ancestor–descendant pairs, and pairs in which
+either phenotype has no variation are not tested. The analysis reports 
+the Phi coefficient as a measure of association and uses Fisher's exact 
+test to assess statistical significance. P-values are adjusted across 
+all tested pairs within the dataset using the Benjamini–Hochberg procedure.
 
 
 Core usage
@@ -31,95 +17,156 @@ Core usage
 
 .. code-block:: python
 
-    from phenosign import HPOCorrelationAnalyzer
+    from phenocor import HPOCorrelationAnalyzer
 
-    analyzer = HPOCorrelationAnalyzer(
-        dataset=dataset,
-        min_individuals_for_correlation_test=30,
-    )
+    analyzer = HPOCorrelationAnalyzer(dataset)
 
-    results = analyzer.compute_correlation_matrix(
+    result = analyzer.compute_correlation_matrix(
+        min_individuals=20,
         n_jobs=-1,
-        include_pmids=False,
     )
-    results.results_table.head()
 
-The main parameters control data filtering, correlation type, and parallelization.
+    result.correlation_results.head()
+
+
+The Phi coefficient ranges from ``-1`` to ``1``:
+
+- positive values indicate that two phenotypes are observed together more often than expected under independence,
+- negative values indicate that two phenotypes are observed together less often than expected under independence,
+- values near zero indicate little or no association.
 
 
 Key parameters
-^^^^^^^^^^^^^^
+--------------
 
-- ``min_individuals_for_correlation_test``  
-  Minimum number of individuals required to evaluate a feature pair.  
-  Higher values increase robustness, while lower values allow more pairs to be tested.
+``min_individuals``
+    Minimum number of individuals with known states for both HPO terms after 
+    propagation required for a pair to be tested. The default is ``20``.
 
-- ``n_jobs``  
-  Number of parallel jobs for computing pairwise correlations.
-  Set to ``-1`` to use all available CPU cores.
-
-- `include_pmids``
-  If ``True``, tracks and aggregates underlying PubMed IDs (PMIDs) contributing to the phenotypic overlaps for downstream publication verification.
+``n_jobs``
+    Number of parallel jobs used for pairwise calculations. Set to ``-1``
+    to use all available CPU cores.
 
 
-.. warning::
+Significant correlations
+------------------------
 
-   Correlation requires variation in the data — each HPO term must have both
-   observed and excluded values across individuals. Terms with no variation
-   are automatically skipped.
+Significant correlations can be retrieved using an adjusted p-value
+threshold:
 
-.. note::
+.. code-block:: python
 
-   Ontologically related HPO terms may be excluded from pairwise testing to avoid
-   spurious associations. Multiple-testing correction is applied automatically.
+    significant = result.get_significant_correlations()
+
+By default, correlations with adjusted p-values below ``0.05`` are returned.
+
+A different significance threshold can be specified:
+
+.. code-block:: python
+
+    significant = result.get_significant_correlations(
+        adj_pval_threshold=0.01,
+    )
+
+Correlations can also be filtered by their absolute Phi coefficient:
+
+.. code-block:: python
+
+    significant = result.get_significant_correlations(
+        adj_pval_threshold=0.05,
+        min_abs_correlation=0.3,
+    )
 
 
 Save results
 ------------
 
+By default, ``save_correlation_results()`` saves correlations with adjusted
+p-values below ``0.05``:
+
 .. code-block:: python
 
-    results.save_correlation_results(
-        corr_threshold=0.1,
-        adj_pval_threshold=0.05,
+    result.save_correlation_results(
         output_file="correlation_results.csv",
     )
 
-Set ``include_pmids=True`` in ``compute_correlation_matrix`` to include associated
-PMIDs in the saved output.
+Additional filtering by correlation strength can be applied:
+
+.. code-block:: python
+
+    result.save_correlation_results(
+        output_file="correlation_results.csv",
+        adj_pval_threshold=0.05,
+        min_abs_correlation=0.3,
+    )
+
+To save all tested correlations without significance filtering:
+
+.. code-block:: python
+
+    result.save_correlation_results(
+        output_file="correlation_results.csv",
+        adj_pval_threshold=None,
+    )
+
+Results can be saved as ``.csv`` or ``.xlsx`` files.
 
 
 Visualization
 -------------
 
+Correlation results can be visualized as a heatmap:
+
 .. code-block:: python
 
-    results.plot_correlation_heatmap_with_significance(
-        corr_threshold=0.1,
+    fig = result.plot_correlation_heatmap_with_significance()
+
+The displayed correlations can be filtered by statistical significance and
+correlation strength:
+
+.. code-block:: python
+
+    fig = result.plot_correlation_heatmap_with_significance(
         adj_pval_threshold=0.05,
+        min_abs_correlation=0.1,
     )
 
-``corr_threshold`` sets the minimum correlation strength; ``adj_pval_threshold``
-controls statistical significance. Lower thresholds include more pairs;
-higher thresholds focus on stronger and more reliable associations.
+``min_abs_correlation`` sets an optional minimum absolute Phi coefficient.
+    The default for plotting is ``0.1``; set it to ``None`` to disable this
+    filter. This filter does not determine statistical significance.
+``adj_pval_threshold`` sets the adjusted p-value threshold.
+
+A custom subtitle can also be provided:
 
 .. code-block:: python
 
-    results.save_correlation_heatmap(
+    fig = result.plot_correlation_heatmap_with_significance(
+        title="Phenotype correlations",
+    )
+
+The heatmap can be saved directly:
+
+.. code-block:: python
+
+    result.save_correlation_heatmap(
         output_file="correlation_heatmap.html",
+    )
+
+The same filtering options can be applied when saving:
+
+.. code-block:: python
+
+    result.save_correlation_heatmap(
+        output_file="correlation_heatmap.html",
+        adj_pval_threshold=0.05,
+        min_abs_correlation=0.1,
     )
 
 The output format is determined automatically from the file extension.
 
 - ``.html`` saves an interactive Plotly figure with zooming, panning,
   and hover tooltips.
-- ``.svg``, ``.png``, ``.pdf``, and ``.jpg`` save static
-  publication-ready figures.
+- ``.svg``, ``.png``, ``.pdf``, and ``.jpg`` save static figures.
 
-For static image formats, the optional ``width``, ``height``, and
-``scale`` parameters can be used to control the output resolution.
-
-Next steps
-----------
-
-- See :doc:`synergy` for higher-order interaction analysis
+For static image formats, ``width``, ``height``, and ``scale`` can be used
+to control the output size and resolution.

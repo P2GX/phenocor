@@ -1,14 +1,9 @@
+import numpy as np
 import pandas as pd
 import pytest
 
-from phenosign.analysis.hpo_correlation_analyzer import (
-    HPOCorrelationAnalyzer,
-)
-from phenosign.core import (
-    PhenotypeDataset,
-)
-
-from phenosign.core.features_data import HpoFeatureData
+from phenocor.analysis.hpo_correlation_analyzer import HPOCorrelationAnalyzer
+from phenocor.core import PhenotypeDataset
 
 
 @pytest.fixture
@@ -23,14 +18,21 @@ def large_dataset():
             "HP:0004": [0] * 15 + [1] * 30 + [0] * 15,
         },
         index=[f"Patient_{i}" for i in range(n_samples)],
+        dtype=float,
     )
 
+    # Synthetic terms are treated as unrelated; self-pairs are excluded.
+    mask = pd.DataFrame(
+        0.0,
+        index=matrix.columns,
+        columns=matrix.columns,
+    )
+    np.fill_diagonal(mask.values, np.nan)
+
     return PhenotypeDataset(
-        hpo_data=HpoFeatureData(
-            matrix=matrix,
-            label_mapping={c: c for c in matrix.columns},
-            relationship_mask=None,
-        ),
+        phenotype_matrix=matrix,
+        hpo_labels={c: c for c in matrix.columns},
+        relationship_mask=mask,
         phenopackets=[],
     )
 
@@ -39,103 +41,135 @@ def large_dataset():
 def strongly_correlated_dataset():
     n_samples = 80
 
-    hp1 = [1] * 40 + [0] * 40
-    hp2 = [1] * 40 + [0] * 40
-    hp3 = [0] * 40 + [1] * 40
-    hp4 = [1, 0] * 40
-
     matrix = pd.DataFrame(
         {
-            "HP:0001": hp1,
-            "HP:0002": hp2,
-            "HP:0003": hp3,
-            "HP:0004": hp4,
+            "HP:0001": [1] * 40 + [0] * 40,
+            "HP:0002": [1] * 40 + [0] * 40,
+            "HP:0003": [0] * 40 + [1] * 40,
+            "HP:0004": [1, 0] * 40,
         },
         index=[f"Patient_{i}" for i in range(n_samples)],
+        dtype=float,
     )
 
+    mask = pd.DataFrame(
+        0.0,
+        index=matrix.columns,
+        columns=matrix.columns,
+    )
+    np.fill_diagonal(mask.values, np.nan)
+
     return PhenotypeDataset(
-        hpo_data=HpoFeatureData(
-            matrix=matrix,
-            label_mapping={c: c for c in matrix.columns},
-            relationship_mask=None,
-        ),
+        phenotype_matrix=matrix,
+        hpo_labels={c: c for c in matrix.columns},
+        relationship_mask=mask,
         phenopackets=[],
     )
 
 
 def test_initialization(large_dataset):
-    analyzer = HPOCorrelationAnalyzer(
-        large_dataset,
-        min_individuals_for_correlation_test=10,
-    )
+    analyzer = HPOCorrelationAnalyzer(large_dataset)
 
     assert analyzer.hpo_matrix.shape == (60, 4)
-    assert analyzer.n_features == 4
+    assert analyzer.n_hpo_terms == 4
 
 
 def test_compute_correlation_matrix(large_dataset):
-    analyzer = HPOCorrelationAnalyzer(
-        large_dataset,
-        min_individuals_for_correlation_test=10,
-    )
+    analyzer = HPOCorrelationAnalyzer(large_dataset)
 
     results = analyzer.compute_correlation_matrix(
+        min_individuals=10,
         n_jobs=1,
         include_pmids=False,
     )
 
-    assert isinstance(results.results_table, pd.DataFrame)
+    table = results.correlation_results
 
-    if not results.results_table.empty:
-        expected = {
-            "HPO_A",
-            "HPO_B",
-            "correlation",
-            "p_value",
-            "adj_p_value",
-        }
+    assert isinstance(table, pd.DataFrame)
+    assert len(table) == 6
 
-        assert expected.issubset(results.results_table.columns)
+    expected_columns = {
+        "HPO_A",
+        "HPO_B",
+        "correlation",
+        "p_value",
+        "adj_p_value",
+        "n(A:E/B:E)",
+        "n(A:E/B:O)",
+        "n(A:O/B:E)",
+        "n(A:O/B:O)",
+        "n_individuals",
+    }
+    assert expected_columns.issubset(table.columns)
+    assert (table["n_individuals"] == 60).all()
+
+    count_columns = [
+        "n(A:E/B:E)",
+        "n(A:E/B:O)",
+        "n(A:O/B:E)",
+        "n(A:O/B:O)",
+    ]
+    assert (
+        table[count_columns].sum(axis=1) == table["n_individuals"]
+    ).all()
 
 
 def test_compute_correlation_matrix_happy_path(
     strongly_correlated_dataset,
 ):
-    analyzer = HPOCorrelationAnalyzer(
-        strongly_correlated_dataset,
-        min_individuals_for_correlation_test=10,
-    )
+    analyzer = HPOCorrelationAnalyzer(strongly_correlated_dataset)
 
     results = analyzer.compute_correlation_matrix(
+        min_individuals=10,
         n_jobs=1,
         include_pmids=False,
     )
 
-    assert not results.results_table.empty
+    table = results.correlation_results
+
+    assert len(table) == 6
+
+    expected_correlations = {
+        frozenset(("HP:0001", "HP:0002")): 1.0,
+        frozenset(("HP:0001", "HP:0003")): -1.0,
+        frozenset(("HP:0002", "HP:0003")): -1.0,
+        frozenset(("HP:0001", "HP:0004")): 0.0,
+        frozenset(("HP:0002", "HP:0004")): 0.0,
+        frozenset(("HP:0003", "HP:0004")): 0.0,
+    }
+
+    for _, row in table.iterrows():
+        pair = frozenset((row["HPO_A"], row["HPO_B"]))
+        assert row["correlation"] == pytest.approx(
+            expected_correlations[pair]
+        )
 
 
-def test_filter_weak_correlations(
-    strongly_correlated_dataset,
-):
-    analyzer = HPOCorrelationAnalyzer(
-        strongly_correlated_dataset,
-        min_individuals_for_correlation_test=10,
-    )
+def test_filter_weak_correlations(strongly_correlated_dataset):
+    analyzer = HPOCorrelationAnalyzer(strongly_correlated_dataset)
 
     results = analyzer.compute_correlation_matrix(
+        min_individuals=10,
         n_jobs=1,
         include_pmids=False,
     )
 
-    result = results.filter_weak_correlations(
-        corr_threshold=0.0,
-        adj_pval_threshold=1.0,
+    filtered = results.get_significant_correlations(
+        adj_pval_threshold=0.05,
+        min_abs_correlation=0.9,
     )
 
-    assert result is not None
+    expected_pairs = {
+        frozenset(("HP:0001", "HP:0002")),
+        frozenset(("HP:0001", "HP:0003")),
+        frozenset(("HP:0002", "HP:0003")),
+    }
+    actual_pairs = {
+        frozenset((row["HPO_A"], row["HPO_B"]))
+        for _, row in filtered.iterrows()
+    }
 
-    coef, pval = result
-
-    assert isinstance(coef, pd.DataFrame)
-    assert isinstance(pval, pd.DataFrame)
+    assert actual_pairs == expected_pairs
+    assert len(filtered) == 3
+    assert np.allclose(filtered["correlation"].abs(), 1.0)
+    assert (filtered["adj_p_value"] < 0.05).all()
