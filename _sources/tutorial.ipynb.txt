@@ -40,7 +40,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 7,
+   "execution_count": 13,
    "id": "deec03c5",
    "metadata": {},
    "outputs": [
@@ -80,7 +80,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
+   "execution_count": 14,
    "id": "01d4d77a",
    "metadata": {},
    "outputs": [],
@@ -105,7 +105,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 15,
    "id": "69656de4",
    "metadata": {},
    "outputs": [
@@ -113,7 +113,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "Calculating pairwise correlations: 100%|██████████| 728/728 [00:01<00:00, 405.05it/s]\n"
+      "Calculating pairwise correlations: 100%|██████████| 728/728 [00:01<00:00, 486.47it/s]\n"
      ]
     },
     {
@@ -273,7 +273,7 @@
        "4       10756346;11175294;12203992;20375004;21683322  "
       ]
      },
-     "execution_count": 9,
+     "execution_count": 15,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -316,7 +316,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 16,
    "id": "935e51e3",
    "metadata": {
     "nbsphinx": {
@@ -341,12 +341,12 @@
     "    filepath = os.path.join(STATIC_DIR, filename)\n",
     "    fig.write_html(filepath, include_plotlyjs=\"cdn\", full_html=True)\n",
     "    return HTML(f'<p>To view the interactive plot, click the link below:</p>'\n",
-    "                f'<a href=\"_static/{filename}\" target=\"_blank\">{link_text}</a>')"
+    "                f'<a href=\"_static/{filename}?v=0.2.1\" target=\"_blank\">{link_text}</a>')"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 17,
    "id": "66c2e84d",
    "metadata": {},
    "outputs": [],
@@ -358,7 +358,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 18,
    "id": "11a16cf9",
    "metadata": {
     "nbsphinx": {
@@ -372,13 +372,13 @@
     {
      "data": {
       "text/html": [
-       "<p>To view the interactive plot, click the link below:</p><a href=\"_static/correlation_heatmap.html\" target=\"_blank\">Click here to view interactive correlation heatmap</a>"
+       "<p>To view the interactive plot, click the link below:</p><a href=\"_static/correlation_heatmap.html?v=0.2.1\" target=\"_blank\">Click here to view interactive correlation heatmap</a>"
       ],
       "text/plain": [
        "<IPython.core.display.HTML object>"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 18,
      "metadata": {},
      "output_type": "execute_result"
     }
