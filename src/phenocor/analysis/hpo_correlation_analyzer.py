@@ -240,7 +240,7 @@ class CorrelationResult:
         self,
         *,
         adj_pval_threshold: float | None = 0.05,
-        min_abs_correlation: float | None = 0.1,
+        min_abs_correlation: float | None = None,
         title: str | None = None,
     ) -> go.Figure:
         """
@@ -256,7 +256,7 @@ class CorrelationResult:
             Adjusted p-value threshold. If ``None``, no significance
             filtering is applied.
 
-        min_abs_correlation : float | None, default=0.1
+        min_abs_correlation : float | None, optional
             Minimum absolute Phi coefficient. If ``None``, no
             correlation-strength filtering is applied.
 
@@ -571,7 +571,7 @@ class CorrelationResult:
                 "Use one of: .html, .png, .svg, .pdf, .jpg."
             )
 
-        figure = self.plot_correlation_heatmap(
+        figure = self.plot_correlation_heatmap_with_significance(
             adj_pval_threshold=adj_pval_threshold,
             min_abs_correlation=min_abs_correlation,
             title=title,
@@ -619,6 +619,25 @@ class HPOCorrelationAnalyzer:
         """
         if not isinstance(dataset, PhenotypeDataset):
             raise TypeError("`dataset` must be a `PhenotypeDataset` instance.")
+
+        if dataset.relationship_mask is None:
+            raise ValueError(
+                "`dataset.relationship_mask` is required for ontology-aware "
+                "analysis. Build the dataset with `PhenotypeDatasetBuilder`, "
+                "or provide a relationship mask aligned to "
+                "`dataset.phenotype_matrix`."
+            )
+ 
+        mask = dataset.relationship_mask
+        if not (
+            mask.index.equals(dataset.hpo_ids)
+            and mask.columns.equals(dataset.hpo_ids)
+        ):
+            raise ValueError(
+                "`dataset.relationship_mask` must be indexed and columned by "
+                "the same HPO IDs, in the same order, as "
+                "`dataset.phenotype_matrix`."
+            )
 
         self.dataset= dataset
         self.hpo_matrix = dataset.phenotype_matrix
@@ -669,8 +688,13 @@ class HPOCorrelationAnalyzer:
             Phi coefficient and two-sided Fisher's exact test p-value.
             If either phenotype has no variation, both values are ``NaN``.
         """
+        count_00 = int(count_00)
+        count_01 = int(count_01)
+        count_10 = int(count_10)
+        count_11 = int(count_11)
+
         denominator = np.sqrt(
-            (count_00 + count_01)
+            float(count_00 + count_01)
             * (count_10 + count_11)
             * (count_00 + count_10)
             * (count_01 + count_11)
@@ -765,53 +789,43 @@ class HPOCorrelationAnalyzer:
                 np.nan,
                 counts,
             )
-        
-        try:
-            phi, p_value = self._calculate_stats(
-                count_00=count_00,
-                count_01=count_01,
-                count_10=count_10,
-                count_11=count_11,
+
+        phi, p_value = self._calculate_stats(
+            count_00=count_00,
+            count_01=count_01,
+            count_10=count_10,
+            count_11=count_11,
+        )
+
+        if pmids_by_individual is not None:
+            individual_ids = self.individual_ids[valid_mask]
+
+            pmids_list = (
+                pmids_by_individual
+                .loc[individual_ids]
+                .to_numpy()
             )
 
-            if pmids_by_individual is not None:
-                individual_ids = self.individual_ids[valid_mask]
-
-                pmids_list = (
-                    pmids_by_individual
-                    .loc[individual_ids]
-                    .to_numpy()
-                )
-
-                all_pmids = sorted(
-                    {
-                        str(pmid)
-                        for pmids in pmids_list
-                        if pmids is not None
-                        for pmid in pmids
-                        if pd.notna(pmid)
-                    }
-                )
-
-                counts["n_pmids"] = len(all_pmids)
-                counts["pmids"] = all_pmids
-
-            return (
-                col_a,
-                col_b,
-                phi,
-                p_value,
-                counts,
+            all_pmids = sorted(
+                {
+                    str(pmid)
+                    for pmids in pmids_list
+                    if pmids is not None
+                    for pmid in pmids
+                    if pd.notna(pmid)
+                }
             )
 
-        except Exception as exc:
-            logger.error(
-                "Error calculating correlation for columns %d and %d: %s",
-                col_a,
-                col_b,
-                exc,
-            )
-            return col_a, col_b, np.nan, np.nan, counts
+            counts["n_pmids"] = len(all_pmids)
+            counts["pmids"] = all_pmids
+
+        return (
+            col_a,
+            col_b,
+            phi,
+            p_value,
+            counts,
+        )
         
     def compute_correlation_matrix(
         self,  

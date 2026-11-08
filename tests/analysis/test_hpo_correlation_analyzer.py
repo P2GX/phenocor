@@ -173,3 +173,45 @@ def test_filter_weak_correlations(strongly_correlated_dataset):
     assert len(filtered) == 3
     assert np.allclose(filtered["correlation"].abs(), 1.0)
     assert (filtered["adj_p_value"] < 0.05).all()
+
+
+def test_save_heatmap_html(strongly_correlated_dataset, tmp_path):
+    result = HPOCorrelationAnalyzer(
+        strongly_correlated_dataset
+    ).compute_correlation_matrix(
+        n_jobs=1,
+        include_pmids=False,
+    )
+
+    output = tmp_path / "heatmap.html"
+    result.save_correlation_heatmap(output)
+
+    assert output.is_file()
+    assert "Plotly.newPlot" in output.read_text(encoding="utf-8")
+
+
+def test_phi_large_counts():
+    phi, p_value = HPOCorrelationAnalyzer._calculate_stats(
+        np.int64(100000),
+        np.int64(0),
+        np.int64(0),
+        np.int64(100000),
+    )
+
+    assert phi == pytest.approx(1.0)
+    assert 0.0 <= p_value <= 1.0
+
+
+def test_worker_errors_are_not_dropped(large_dataset, monkeypatch):
+    analyzer = HPOCorrelationAnalyzer(large_dataset)
+
+    def fail(*args, **kwargs):
+        raise RuntimeError("intentional failure")
+
+    monkeypatch.setattr(analyzer, "_calculate_stats", fail)
+
+    with pytest.raises(RuntimeError, match="intentional failure"):
+        analyzer.compute_correlation_matrix(
+            n_jobs=1,
+            include_pmids=False,
+        )
