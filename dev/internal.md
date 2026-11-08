@@ -14,7 +14,7 @@ To set things up, perform the following steps (substitute name of venv if needed
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
-pip install -e “.[docs]”
+pip install -e ".[docs]"
 ```
 
 Then build the docs:
