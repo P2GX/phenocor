@@ -5,11 +5,14 @@ Pairwise associations between HPO terms can be analyzed using
 ``HPOCorrelationAnalyzer``.
 
 For each pair, individuals with an unknown state for either term are
-excluded. Self-pairs, ancestor–descendant pairs, and pairs in which
-either phenotype has no variation are not tested. The analysis reports 
-the Phi coefficient as a measure of association and uses Fisher's exact 
-test to assess statistical significance. P-values are adjusted across 
-all tested pairs within the dataset using the Benjamini–Hochberg procedure.
+excluded. Self-pairs and ancestor-descendant pairs are excluded.
+A remaining pair is tested only if it meets ``min_individuals`` and
+both phenotypes vary within the pair-specific effective sample.
+
+The analysis reports the Phi coefficient and a two-sided Fisher's exact
+test p-value. Benjamini-Hochberg correction is applied across all valid
+pairs tested in this dataset. Changing ``min_individuals`` can change
+the set of tests and therefore the adjusted p-values.
 
 
 Core usage
@@ -28,6 +31,45 @@ Core usage
 
     result.correlation_results.head()
 
+Result columns
+--------------
+
+``HPO_A``, ``HPO_B``
+    Canonical HPO IDs of the two features.
+
+``correlation``
+    Phi coefficient.
+
+``p_value``
+    Two-sided Fisher's exact test p-value.
+
+``adj_p_value``
+    Benjamini-Hochberg-adjusted p-value.
+
+``n(A:E/B:E)``
+    Number of individuals with both features excluded.
+
+``n(A:E/B:O)``
+    Number of individuals with A excluded and B observed.
+
+``n(A:O/B:E)``
+    Number of individuals with A observed and B excluded.
+
+``n(A:O/B:O)``
+    Number of individuals with both features observed.
+
+``n_individuals``
+    Number of individuals with known states for both features after
+    propagation. This equals the sum of the four contingency counts.
+
+``HPO_A_label``, ``HPO_B_label``
+    Feature labels, included when available.
+
+``pmids``, ``n_pmids``
+    Unique source PubMed IDs and their count, included when
+    ``include_pmids=True``. IDs are aggregated across individuals
+    contributing to the pair. They do not represent independent
+    replications or studies confirming the association.
 
 The Phi coefficient ranges from ``-1`` to ``1``:
 
@@ -132,8 +174,8 @@ correlation strength:
     )
 
 ``min_abs_correlation`` sets an optional minimum absolute Phi coefficient.
-    The default for plotting is ``0.1``; set it to ``None`` to disable this
-    filter. This filter does not determine statistical significance.
+This filter does not determine statistical significance.
+
 ``adj_pval_threshold`` sets the adjusted p-value threshold.
 
 A custom subtitle can also be provided:
@@ -170,3 +212,20 @@ The output format is determined automatically from the file extension.
 
 For static image formats, ``width``, ``height``, and ``scale`` can be used
 to control the output size and resolution.
+
+Interpretation and limitations
+------------------------------
+
+Associations describe phenotype annotation states among individuals
+with known states for both features in the selected cohort.
+
+Unreported features remain unknown unless their states can be inferred
+through hierarchy propagation. Individuals with known states may differ
+systematically from those with unknown states.
+
+Associations may be influenced by reporting practices, publication
+source, age, and cohort composition. They do not establish causal
+relationships between phenotypes.
+
+Static image export uses Kaleido and requires a compatible browser
+installation. HTML export does not require a browser installation.

@@ -270,8 +270,11 @@ class HPOHierarchyEngine:
         Self-pairs and ancestor-descendant pairs are marked as ``NaN``. 
         Unrelated HPO term pairs are marked as ``0``.
 
-        The mask is intended to exclude structurally related HPO term 
+        The mask is intended to exclude structurally related HPO term
         pairs from downstream correlation analysis.
+
+        This method is intended for internal use after ``propagate()``
+        has prepared the ontology caches for the supplied terms.
 
         Parameters
         ----------
@@ -285,8 +288,8 @@ class HPOHierarchyEngine:
             Square matrix indexed and columned by ``hpo_ids``: 
             
             - ``NaN`` indicates a self-pair or ancestor-descendant pair; 
-            - ``0`` indicates a pair eligible for downstream evaluation with 
-            respect to ontology structure.
+            - ``0`` indicates a pair eligible for downstream evaluation
+              with respect to ontology structure.
         """
         hpo_ids = list(hpo_ids)
         hpo_id_to_index = {hpo_id: index for index, hpo_id in enumerate(hpo_ids)}

@@ -6,7 +6,7 @@ This page contains internal instructions for maintaining and releasing the proje
 
 ## Documentation
 
-These pages are generated with mkdocs.
+These pages are generated with Sphinx.
 
 To set things up, perform the following steps (substitute name of venv if needed).
 
@@ -14,7 +14,7 @@ To set things up, perform the following steps (substitute name of venv if needed
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
-pip install -e .[docs]
+pip install -e “.[docs]”
 ```
 
 Then build the docs:
