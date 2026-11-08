@@ -571,7 +571,7 @@ class CorrelationResult:
                 "Use one of: .html, .png, .svg, .pdf, .jpg."
             )
 
-        figure = self.plot_correlation_heatmap(
+        figure = self.plot_correlation_heatmap_with_significance(
             adj_pval_threshold=adj_pval_threshold,
             min_abs_correlation=min_abs_correlation,
             title=title,
@@ -619,6 +619,25 @@ class HPOCorrelationAnalyzer:
         """
         if not isinstance(dataset, PhenotypeDataset):
             raise TypeError("`dataset` must be a `PhenotypeDataset` instance.")
+
+        if dataset.relationship_mask is None:
+            raise ValueError(
+                "`dataset.relationship_mask` is required for ontology-aware "
+                "analysis. Build the dataset with `PhenotypeDatasetBuilder`, "
+                "or provide a relationship mask aligned to "
+                "`dataset.phenotype_matrix`."
+            )
+ 
+        mask = dataset.relationship_mask
+        if not (
+            mask.index.equals(dataset.hpo_ids)
+            and mask.columns.equals(dataset.hpo_ids)
+        ):
+            raise ValueError(
+                "`dataset.relationship_mask` must be indexed and columned by "
+                "the same HPO IDs, in the same order, as "
+                "`dataset.phenotype_matrix`."
+            )
 
         self.dataset= dataset
         self.hpo_matrix = dataset.phenotype_matrix
