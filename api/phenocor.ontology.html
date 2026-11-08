@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>phenocor.ontology package &mdash; phenocor 0.2.0 documentation</title>
+  <title>phenocor.ontology package &mdash; phenocor 0.2.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c6c3d6f6" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../_static/documentation_options.js?v=37f418d5"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -136,6 +136,8 @@ annotations.</p>
 Unrelated HPO term pairs are marked as <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <p>The mask is intended to exclude structurally related HPO term
 pairs from downstream correlation analysis.</p>
+<p>This method is intended for internal use after <code class="docutils literal notranslate"><span class="pre">propagate()</span></code>
+has prepared the ontology caches for the supplied terms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>hpo_ids</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – Canonical HPO term IDs, typically corresponding to columns of
@@ -145,9 +147,9 @@ a propagated phenotype matrix. Input order is preserved.</p>
 <dd class="field-even"><p><p>Square matrix indexed and columned by <code class="docutils literal notranslate"><span class="pre">hpo_ids</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">NaN</span></code> indicates a self-pair or ancestor-descendant pair;</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> indicates a pair eligible for downstream evaluation with</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> indicates a pair eligible for downstream evaluation
+with respect to ontology structure.</p></li>
 </ul>
-<p>respect to ontology structure.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Build Dataset &mdash; phenocor 0.2.0 documentation</title>
+  <title>Build Dataset &mdash; phenocor 0.2.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c6c3d6f6" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../_static/documentation_options.js?v=37f418d5"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -107,6 +107,18 @@ propagation.</p>
 <p>This example builds a single dataset from all Phenopackets in the directory.
 For disease-specific analyses, select individuals with the relevant disease
 before building the dataset.</p>
+<p>Each input Phenopacket should represent a different individual.
+Phenopacket IDs define matrix row identities and must be unique.
+Different Phenopacket IDs are not automatically deduplicated using
+subject IDs.</p>
+<p>If the same term is explicitly recorded as both observed and excluded,
+observed status takes precedence and a warning is emitted. The same
+rule applies when multiple input IDs resolve to the same canonical
+HPO term.</p>
+<p>During hierarchy propagation, explicit annotations are preserved when
+they conflict with inferred annotations. If both observed and excluded
+states are inferred for an unknown value, observed status takes
+precedence and a warning is emitted.</p>
 <section id="core-usage">
 <h2>Core usage<a class="headerlink" href="#core-usage" title="Link to this heading"></a></h2>
 <p>Phenopackets can be loaded from JSON files using the official
@@ -155,7 +167,10 @@ before building the dataset.</p>
 </section>
 <section id="hpo-configuration">
 <h2>HPO configuration<a class="headerlink" href="#hpo-configuration" title="Link to this heading"></a></h2>
-<p>By default, the latest available HPO release is used.</p>
+<p>By default, the latest available HPO release is used.
+For reproducible analyses, explicitly select an HPO release or supply
+a versioned local ontology file. Record the ontology release together
+with the phenopacket data version.</p>
 <p>A specific HPO release can be selected for reproducible analyses:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">builder</span> <span class="o">=</span> <span class="n">PhenotypeDatasetBuilder</span><span class="p">(</span>
     <span class="n">phenopackets</span><span class="p">,</span>

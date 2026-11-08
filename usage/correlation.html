@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Correlation Analysis &mdash; phenocor 0.2.0 documentation</title>
+  <title>Correlation Analysis &mdash; phenocor 0.2.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=c6c3d6f6" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../_static/documentation_options.js?v=37f418d5"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -57,10 +57,12 @@
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Build Dataset</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Correlation Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#core-usage">Core usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#result-columns">Result columns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#key-parameters">Key parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#significant-correlations">Significant correlations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#save-results">Save results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interpretation-and-limitations">Interpretation and limitations</a></li>
 </ul>
 </li>
 </ul>
@@ -98,11 +100,13 @@
 <p>Pairwise associations between HPO terms can be analyzed using
 <code class="docutils literal notranslate"><span class="pre">HPOCorrelationAnalyzer</span></code>.</p>
 <p>For each pair, individuals with an unknown state for either term are
-excluded. Self-pairs, ancestor–descendant pairs, and pairs in which
-either phenotype has no variation are not tested. The analysis reports
-the Phi coefficient as a measure of association and uses Fisher’s exact
-test to assess statistical significance. P-values are adjusted across
-all tested pairs within the dataset using the Benjamini–Hochberg procedure.</p>
+excluded. Self-pairs and ancestor-descendant pairs are excluded.
+A remaining pair is tested only if it meets <code class="docutils literal notranslate"><span class="pre">min_individuals</span></code> and
+both phenotypes vary within the pair-specific effective sample.</p>
+<p>The analysis reports the Phi coefficient and a two-sided Fisher’s exact
+test p-value. Benjamini-Hochberg correction is applied across all valid
+pairs tested in this dataset. Changing <code class="docutils literal notranslate"><span class="pre">min_individuals</span></code> can change
+the set of tests and therefore the adjusted p-values.</p>
 <section id="core-usage">
 <h2>Core usage<a class="headerlink" href="#core-usage" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">phenocor</span><span class="w"> </span><span class="kn">import</span> <span class="n">HPOCorrelationAnalyzer</span>
@@ -117,6 +121,37 @@ all tested pairs within the dataset using the Benjamini–Hochberg procedure.</p
 <span class="n">result</span><span class="o">.</span><span class="n">correlation_results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</section>
+<section id="result-columns">
+<h2>Result columns<a class="headerlink" href="#result-columns" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">HPO_A</span></code>, <code class="docutils literal notranslate"><span class="pre">HPO_B</span></code></dt><dd><p>Canonical HPO IDs of the two features.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">correlation</span></code></dt><dd><p>Phi coefficient.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">p_value</span></code></dt><dd><p>Two-sided Fisher’s exact test p-value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">adj_p_value</span></code></dt><dd><p>Benjamini-Hochberg-adjusted p-value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">n(A:E/B:E)</span></code></dt><dd><p>Number of individuals with both features excluded.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">n(A:E/B:O)</span></code></dt><dd><p>Number of individuals with A excluded and B observed.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">n(A:O/B:E)</span></code></dt><dd><p>Number of individuals with A observed and B excluded.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">n(A:O/B:O)</span></code></dt><dd><p>Number of individuals with both features observed.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">n_individuals</span></code></dt><dd><p>Number of individuals with known states for both features after
+propagation. This equals the sum of the four contingency counts.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">HPO_A_label</span></code>, <code class="docutils literal notranslate"><span class="pre">HPO_B_label</span></code></dt><dd><p>Feature labels, included when available.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">pmids</span></code>, <code class="docutils literal notranslate"><span class="pre">n_pmids</span></code></dt><dd><p>Unique source PubMed IDs and their count, included when
+<code class="docutils literal notranslate"><span class="pre">include_pmids=True</span></code>. IDs are aggregated across individuals
+contributing to the pair. They do not represent independent
+replications or studies confirming the association.</p>
+</dd>
+</dl>
 <p>The Phi coefficient ranges from <code class="docutils literal notranslate"><span class="pre">-1</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
 <ul class="simple">
 <li><p>positive values indicate that two phenotypes are observed together more often than expected under independence,</p></li>
@@ -197,11 +232,8 @@ correlation strength:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">min_abs_correlation</span></code> sets an optional minimum absolute Phi coefficient.</dt><dd><p>The default for plotting is <code class="docutils literal notranslate"><span class="pre">0.1</span></code>; set it to <code class="docutils literal notranslate"><span class="pre">None</span></code> to disable this
-filter. This filter does not determine statistical significance.</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">min_abs_correlation</span></code> sets an optional minimum absolute Phi coefficient.
+This filter does not determine statistical significance.</p>
 <p><code class="docutils literal notranslate"><span class="pre">adj_pval_threshold</span></code> sets the adjusted p-value threshold.</p>
 <p>A custom subtitle can also be provided:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">plot_correlation_heatmap_with_significance</span><span class="p">(</span>
@@ -231,6 +263,19 @@ and hover tooltips.</p></li>
 </ul>
 <p>For static image formats, <code class="docutils literal notranslate"><span class="pre">width</span></code>, <code class="docutils literal notranslate"><span class="pre">height</span></code>, and <code class="docutils literal notranslate"><span class="pre">scale</span></code> can be used
 to control the output size and resolution.</p>
+</section>
+<section id="interpretation-and-limitations">
+<h2>Interpretation and limitations<a class="headerlink" href="#interpretation-and-limitations" title="Link to this heading"></a></h2>
+<p>Associations describe phenotype annotation states among individuals
+with known states for both features in the selected cohort.</p>
+<p>Unreported features remain unknown unless their states can be inferred
+through hierarchy propagation. Individuals with known states may differ
+systematically from those with unknown states.</p>
+<p>Associations may be influenced by reporting practices, publication
+source, age, and cohort composition. They do not establish causal
+relationships between phenotypes.</p>
+<p>Static image export uses Kaleido and requires a compatible browser
+installation. HTML export does not require a browser installation.</p>
 </section>
 </section>
 

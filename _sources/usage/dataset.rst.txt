@@ -15,6 +15,21 @@ This example builds a single dataset from all Phenopackets in the directory.
 For disease-specific analyses, select individuals with the relevant disease 
 before building the dataset.
 
+Each input Phenopacket should represent a different individual.
+Phenopacket IDs define matrix row identities and must be unique.
+Different Phenopacket IDs are not automatically deduplicated using
+subject IDs.
+
+If the same term is explicitly recorded as both observed and excluded,
+observed status takes precedence and a warning is emitted. The same
+rule applies when multiple input IDs resolve to the same canonical
+HPO term.
+
+During hierarchy propagation, explicit annotations are preserved when
+they conflict with inferred annotations. If both observed and excluded
+states are inferred for an unknown value, observed status takes
+precedence and a warning is emitted.
+
 
 Core usage
 ----------
@@ -75,6 +90,9 @@ HPO configuration
 -----------------
 
 By default, the latest available HPO release is used.
+For reproducible analyses, explicitly select an HPO release or supply
+a versioned local ontology file. Record the ontology release together
+with the phenopacket data version.
 
 A specific HPO release can be selected for reproducible analyses:
 
